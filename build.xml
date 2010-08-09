@@ -1,0 +1,16 @@
+<project name="kmlutils" default="build">
+
+    <target name="compile">
+    	<javac srcdir="src"
+         destdir="bin"
+         classpath="lib/*"
+         debug="on"
+		/>
+    </target>
+
+	<target name="build" depends="compile">
+		<mkdir dir="dist"/>
+		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
+    </target>
+
+</project>
