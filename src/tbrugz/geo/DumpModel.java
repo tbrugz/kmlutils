@@ -1,4 +1,4 @@
-package tbrugz.geo.parser;
+package tbrugz.geo;
 
 import java.io.PrintStream;
 

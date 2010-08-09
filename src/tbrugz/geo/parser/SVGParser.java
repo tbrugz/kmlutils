@@ -31,12 +31,9 @@ public class SVGParser extends DefaultHandler {
 	Composite lastGroupParsed = null;
 	int nestLevel = 0;
 	
-	float maxX = Float.MIN_VALUE, minX = Float.MAX_VALUE, maxY = Float.MIN_VALUE, minY = Float.MAX_VALUE;
-	
 	static Log log = LogFactory.getLog(SVGParser.class);
 
-	//XXX return "root"?
-	public void parseDocument(String file) {
+	public Root parseDocument(String file) {
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
@@ -54,6 +51,8 @@ public class SVGParser extends DefaultHandler {
 		}catch (IOException ie) {
 			ie.printStackTrace();
 		}
+		
+		return root;
 	}
 
 	//Event Handlers
@@ -108,7 +107,6 @@ public class SVGParser extends DefaultHandler {
 		if(qName.equalsIgnoreCase(SVG)) {
 			nestLevel--;
 			log.debug("</svg> processed, l:"+nestLevel);
-			//TODO end! write to file!
 			
 			//DumpModel dm = new DumpModel();
 			//dm.dumpModel(root);
@@ -183,10 +181,10 @@ public class SVGParser extends DefaultHandler {
 	}
 	
 	void setXYMaxMin(Point p) {
-		if(p.x > maxX) maxX = p.x;
-		if(p.y > maxY) maxY = p.y;
-		if(p.x < minX) minX = p.x;
-		if(p.y < minY) minY = p.y;
+		if(p.x > root.maxX) root.maxX = p.x;
+		if(p.y > root.maxY) root.maxY = p.y;
+		if(p.x < root.minX) root.minX = p.x;
+		if(p.y < root.minY) root.minY = p.y;
 	}
 
 }

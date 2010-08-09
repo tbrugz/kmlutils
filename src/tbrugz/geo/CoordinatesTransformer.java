@@ -1,4 +1,4 @@
-package tbrugz.geo.parser;
+package tbrugz.geo;
 
 import tbrugz.geo.model.Point;
 import tbrugz.geo.model.Polygon;
