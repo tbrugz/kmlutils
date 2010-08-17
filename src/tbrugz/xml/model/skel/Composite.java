@@ -1,4 +1,4 @@
-package tbrugz.geo.model.skel;
+package tbrugz.xml.model.skel;
 
 import java.util.List;
 

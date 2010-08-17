@@ -1,6 +1,6 @@
 package tbrugz.geo.model;
 
-import tbrugz.geo.model.skel.CompositeImpl;
+import tbrugz.xml.model.skel.CompositeImpl;
 
 public class Group extends CompositeImpl {
 

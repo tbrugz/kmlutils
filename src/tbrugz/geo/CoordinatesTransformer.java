@@ -3,8 +3,8 @@ package tbrugz.geo;
 import tbrugz.geo.model.Point;
 import tbrugz.geo.model.Polygon;
 import tbrugz.geo.model.Root;
-import tbrugz.geo.model.skel.Composite;
-import tbrugz.geo.model.skel.Element;
+import tbrugz.xml.model.skel.Composite;
+import tbrugz.xml.model.skel.Element;
 
 public class CoordinatesTransformer {
 

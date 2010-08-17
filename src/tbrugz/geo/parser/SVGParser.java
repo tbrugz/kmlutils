@@ -16,7 +16,7 @@ import tbrugz.geo.model.Group;
 import tbrugz.geo.model.Point;
 import tbrugz.geo.model.Polygon;
 import tbrugz.geo.model.Root;
-import tbrugz.geo.model.skel.Composite;
+import tbrugz.xml.model.skel.Composite;
 
 public class SVGParser extends DefaultHandler {
 	

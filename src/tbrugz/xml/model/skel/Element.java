@@ -1,4 +1,4 @@
-package tbrugz.geo.model.skel;
+package tbrugz.xml.model.skel;
 
 public interface Element {
 	String getId();

@@ -3,7 +3,7 @@ package tbrugz.geo.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import tbrugz.geo.model.skel.Element;
+import tbrugz.xml.model.skel.Element;
 
 public class Polygon implements Element {
 	String id;
