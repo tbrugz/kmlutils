@@ -1,26 +1,17 @@
 package tbrugz.geo;
 
-import java.io.PrintStream;
-
 import tbrugz.geo.model.Group;
 import tbrugz.geo.model.Point;
 import tbrugz.geo.model.Polygon;
 import tbrugz.geo.model.Root;
+import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;
 
-public class DumpModel {
-
-	static String levelStr = "  "; //"\t";
+public class DumpModel extends AbstractDump {
 	
-	PrintStream output = null;
-	
-	public void dumpModel(Root root, PrintStream out) {
-		this.output = out;
-		dumpModel(root, 0);
-	}
-	
-	void dumpModel(Element elem, int level) {
+	@Override
+	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
 			out("<root id='"+elem.getId()+"'>", level);
 		}
@@ -52,8 +43,4 @@ public class DumpModel {
 		}
 	}
 	
-	void out(String s, int nestLevel) {
-		for(int i=0;i<nestLevel;i++) output.print(levelStr);
-		output.println(s);
-	}
 }

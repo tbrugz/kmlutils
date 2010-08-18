@@ -1,8 +1,5 @@
 package tbrugz.geo;
 
-import java.io.FileInputStream;
-
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
 
@@ -13,37 +10,25 @@ import tbrugz.geo.model.Group;
 import tbrugz.geo.model.Point;
 import tbrugz.geo.model.Polygon;
 import tbrugz.geo.model.Root;
+import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;
 
-public class DumpKMLModel {
+public class DumpKMLModel extends AbstractDump {
 
-	static String levelStr = "  "; //"\t";
-	
 	static Log log = LogFactory.getLog(DumpKMLModel.class);
 
 	Properties idMappings = new Properties();
-	Properties snippets = new Properties();
 	
-	PrintStream output = null;
-	
-	public void dumpModel(Root root, PrintStream out) {
-		this.output = out;
+	@Override
+	public void dumpModel(Element root, PrintStream out) {
 		loadProp(idMappings, "idmappings.properties");
-		loadProp(snippets, "snippets.properties");
-		dumpModel(root, 0);
+		loadSnippets("snippets.properties");
+		super.dumpModel(root, out);
 	}
 	
-	void loadProp(Properties prop, String fileName) {
-		try {
-			prop.load(new FileInputStream(fileName));
-		}
-		catch(IOException ioe) {
-			log.warn("Error loading id mappings file: "+ioe);
-		} 
-	}
-	
-	void dumpModel(Element elem, int level) {
+	@Override
+	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
 			out("<kml xmlns=\"http://earth.google.com/kml/2.0\"><Document id=\""+getId(elem.getId())+"\"><name>"+getName(elem.getId())+"</name><visibility>0</visibility>", level);
 			outSnippet("Document", level);
@@ -121,15 +106,5 @@ public class DumpKMLModel {
 		
 		if(outputStyleId != null) return outputStyleId;
 		return null;
-	}
-	
-	void outSnippet(String snippetId, int nestLevel) {
-		String s = snippets.getProperty(snippetId);
-		if(s!=null) out(s, nestLevel);
-	}
-	
-	void out(String s, int nestLevel) {
-		for(int i=0;i<nestLevel;i++) output.print(levelStr);
-		output.println(s);
 	}
 }
