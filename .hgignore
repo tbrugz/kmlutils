@@ -1,3 +1,4 @@
 glob:bin/*
 glob:work/output/*
 glob:dist/*
+glob:work/input/tmp/*

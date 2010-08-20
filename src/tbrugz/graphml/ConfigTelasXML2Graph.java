@@ -24,7 +24,7 @@ public class ConfigTelasXML2Graph {
 	public static void main(String[] args) throws IOException {
 		//Properties prop = new Properties();
 		//prop.load(new FileInputStream("xml2xmi.properties"));
-		String fileIn = "work/input/config-telas.xml";
+		String fileIn = "work/input/tmp/config-telas.xml";
 		String fileOut = "work/output/config-telas-out.graphml";
 		
 		log.info("parsing svg: "+fileIn);

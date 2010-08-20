@@ -117,7 +117,7 @@ public class ConfigTelasXMLParser extends DefaultHandler {
 	Pattern pConstantesTelas = Pattern.compile("(ConstantesTelas\\.UC\\w+)");
 	
 	Set<String> procDecisao(String file) throws IOException {
-		File f = new File("work/input/tela/"+file+".java");
+		File f = new File("work/input/tmp/tela/"+file+".java");
 		long length = f.length();
 		char[] cb = new char[(int)length];
 		//CharBuffer cb = CharBuffer.allocate((int)length);
