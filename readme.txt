@@ -19,6 +19,7 @@ License:
 GNU Lesser General Public License - http://www.gnu.org/licenses/lgpl.html
 
 Dependencies:
+- jdk 1.5
 - log4j (included)
 - commons-logging (included)
 - ant (not included - build only)
