@@ -30,14 +30,10 @@ public class DumpKMLModel extends AbstractDump {
 	@Override
 	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
-			out("<kml xmlns=\"http://earth.google.com/kml/2.0\"><Document id=\""+getId(elem.getId())+"\"><name>"+getName(elem.getId())+"</name><visibility>0</visibility>", level);
-			outSnippet("Document", level);
-			//out("<root id='"+elem.getId()+"'>", level);
+			outSnippet("Document", level, getId(elem.getId()), getName(elem.getId()) );
 		}
 		else if(elem instanceof Group) {
-			out("<Folder id=\""+getId(elem.getId())+"\"><name>"+getName(elem.getId())+"</name><visibility>0</visibility>", level);
-			outSnippet("Folder", level);
-			//out("<g id='"+elem.getId()+"'>", level);
+			outSnippet("Folder", level, getId(elem.getId()), getName(elem.getId()));
 		}
 		else if(elem instanceof Polygon) {
 			Polygon polygon = ((Polygon)elem);
@@ -45,23 +41,14 @@ public class DumpKMLModel extends AbstractDump {
 			for(Point p: polygon.points) {
 				b.append(p.x+","+p.y+",0 ");
 			}
-			out("<Placemark id=\""+getId(elem.getId())+"\"><name>"+getName(elem.getId())+"</name><visibility>1</visibility>", level);
 
-			//setting style...
-			/*String style = getStyle(elem.getId());
-			if(style==null) {
-				int styleId = (int) (Math.random()*4+1);
-				style = "style"+styleId;
-			}*/
-			//out("<styleUrl>#"+style+"</styleUrl>", level);
-			outSnippet("Placemark", level);
+			outSnippet("Placemark", level, getId(elem.getId()), getName(elem.getId()));
 
 			//setting centre
 			//out("<Point><coordinates>"+polygon.centre.x+","+polygon.centre.y+",0</coordinates></Point>", level);
 
-			out("<Polygon id=\"Polygon"+getId(elem.getId())+"\"><outerBoundaryIs><LinearRing><coordinates>", level);
-			out(b.toString(), level+1);
-			out("</coordinates></LinearRing></outerBoundaryIs></Polygon>", level);
+			outSnippet("Polygon", level+1, getId(elem.getId()), b.toString());
+			
 			out("</Placemark>", level);
 		}
 		else {
@@ -76,11 +63,9 @@ public class DumpKMLModel extends AbstractDump {
 
 		if(elem instanceof Root) {
 			out("</Document></kml>", level);
-			//out("</root>", level);
 		}
 		else if(elem instanceof Group) {
 			out("</Folder>", level);
-			//out("</g>", level);
 		}
 	}
 	
