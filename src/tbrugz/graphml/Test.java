@@ -1,6 +1,21 @@
 package tbrugz.graphml;
 
+import java.util.Properties;
 import java.util.regex.Pattern;
+
+import tbrugz.xml.AbstractDump;
+import tbrugz.xml.model.skel.Element;
+
+class DumpTest extends AbstractDump {
+
+	@Override
+	public void dumpModel(Element elem, int level) {
+	}
+	
+	Properties getSnippets() {
+		return snippets;
+	}
+}
 
 public class Test {
 
@@ -23,6 +38,18 @@ public class Test {
 		scontent = scontent.replaceAll("//.*", "");
 		//scontent = scontent.replaceAll("//.*?\\n", "");
 		System.out.println("scontent: "+scontent);
+		
+		Test t = new Test();
+		t.dumpTest();
 	}
 
+	void dumpTest() {
+		DumpTest dt = new DumpTest();
+		dt.loadSnippets("test-snippets.properties");
+		dt.dumpModel(null, System.out);
+		for(int i=0;i<20;i++) {
+			System.out.println("["+i+"] snippet: "+dt.getSnippets().getProperty("lala"));
+			dt.outSnippet("lala", 0, "zero", "one");
+		}
+	}
 }

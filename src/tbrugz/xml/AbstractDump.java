@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,7 +19,7 @@ public abstract class AbstractDump {
 	
 	static Log log = LogFactory.getLog(AbstractDump.class);
 
-	Properties snippets = new Properties();
+	protected Properties snippets = new Properties();
 	
 	PrintStream output = null;
 	
@@ -42,20 +44,45 @@ public abstract class AbstractDump {
 	
 	public abstract void dumpModel(Element elem, int level);
 	
+	final static Pattern paramPattern = Pattern.compile("(\\{(.)+?})");
+	final static ReplaceUtil regexutil = new ReplaceUtil();
+	
 	public void outSnippet(String snippetId, int nestLevel, String... params) {
 		String s = snippets.getProperty(snippetId);
 		if(s==null) return;
-		if(params!=null) {
+		
+		StringBuilder sb = new StringBuilder(s);
+		Matcher matcher = paramPattern.matcher(s);
+		log.debug("pattern: "+paramPattern+"; matcher: "+matcher);
+		
+		int xtraOffset = 0; //replacement string lenght may be different from replaced string lenght, so an extra offset is needed
+		while(matcher.find()) {
+			String paramGroup = matcher.group(1);
+			String replacement = regexutil.procFunc(paramGroup, params);
+			log.debug("param: "+paramGroup+"; replacement: "+replacement);
+			if(replacement!=null) {
+				sb.replace(matcher.start()+xtraOffset, matcher.end()+xtraOffset, replacement);
+				int originalSize = matcher.end()-matcher.start();
+				xtraOffset += replacement.length()-originalSize;
+				//matcher.replaceFirst(replacement);
+				//matcher = paramPattern.matcher(s);
+			}
+		}
+		
+		/*if(params!=null) {
 			for(int i=0;i<params.length;i++) {
 				log.debug(i+";"+params[i]);
 				s = s.replaceAll("\\{"+i+"}", params[i]);
 			}
-		}
-		if(s!=null) out(s, nestLevel);
+		}*/
+		
+		//if(s!=null) out(s, nestLevel);
+		if(sb!=null) out(sb.toString(), nestLevel);
 	}
 	
 	public void out(String s, int nestLevel) {
 		for(int i=0;i<nestLevel;i++) output.print(levelStr);
 		output.println(s);
 	}
+	
 }
