@@ -48,12 +48,12 @@ public class DumpKMLModel extends AbstractDump {
 			out("<Placemark id=\""+getId(elem.getId())+"\"><name>"+getName(elem.getId())+"</name><visibility>1</visibility>", level);
 
 			//setting style...
-			String style = getStyle(elem.getId());
+			/*String style = getStyle(elem.getId());
 			if(style==null) {
 				int styleId = (int) (Math.random()*4+1);
 				style = "style"+styleId;
-			}
-			out("<styleUrl>#"+style+"</styleUrl>", level);
+			}*/
+			//out("<styleUrl>#"+style+"</styleUrl>", level);
 			outSnippet("Placemark", level);
 
 			//setting centre
