@@ -29,12 +29,8 @@ http://commons.wikimedia.org/wiki/File:Municipalities_of_the_South_Region_of_Bra
 licensed under: http://creativecommons.org/licenses/by-sa/3.0/deed.en
 
 
-running
--------
-classes with main():
+running - classes with main()
+-----------------------------
 - tbrugz.geo.SVG2KML
 - tbrugz.geo.test.Test
 - tbrugz.xml.test.Test
-- tce.configtelas.ArquivosPadXML2Graph
-- tce.configtelas.ConfigTelasXML2Graph
-
