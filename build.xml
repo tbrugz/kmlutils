@@ -14,7 +14,7 @@
 
 	<target name="build" depends="prepare, compile">
 		<mkdir dir="dist"/>
-		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
+		<jar destfile="dist/kmlutils.jar" basedir="bin"/>
     </target>
 
 </project>

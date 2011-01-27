@@ -1,8 +1,8 @@
 package tce.xmlxtra.model;
 
-import tbrugz.xml.model.skel.Element;
+import tbrugz.graphml.model.Link;
 
-public class ArquivoLink implements Element {
+public class ArquivoLink extends Link {
 	String idOrigem;
 	String idDestino;
 

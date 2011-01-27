@@ -1,6 +1,7 @@
 package tce.xmlxtra;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import tce.xmlxtra.model.Arquivo;
-import tce.xmlxtra.model.ArquivoLink;
+import tbrugz.graphml.model.Link;
+import tbrugz.graphml.model.Node;
 import tbrugz.graphml.model.Root;
 
 public class ArquivosPadXMLParser extends DefaultHandler {
@@ -27,8 +29,8 @@ public class ArquivosPadXMLParser extends DefaultHandler {
 	
 	Root root = null;
 	//Composite lastGroupParsed = null;
-	List<Arquivo> nodes = new ArrayList<Arquivo>();
-	List<ArquivoLink> links = new ArrayList<ArquivoLink>();
+	List<Node> nodes = new ArrayList<Node>();
+	List<Link> links = new ArrayList<Link>();
 	int nestLevel = 0;
 	
 	static Log log = LogFactory.getLog(ArquivosPadXMLParser.class);
@@ -81,16 +83,16 @@ public class ArquivosPadXMLParser extends DefaultHandler {
 			String depende = attributes.getValue("depende");
 			
 			aa.setId(identificador);
-			aa.setNome(nomeCompleto);
+			aa.setLabel(nomeCompleto);
 			aa.setNumeroLei(numeroLei);
 			nodes.add(aa);
 			
 			if(depende!=null && !depende.equals("")) {
 				String[] deps = depende.split(",");
 				for(String s: deps) {
-					ArquivoLink link = new ArquivoLink();
-					link.setIdOrigem(identificador);
-					link.setIdDestino(s.trim());
+					Link link = new Link();
+					link.setOrigem(identificador);
+					link.setsDestino(s.trim());
 					links.add(link);
 				}
 			}

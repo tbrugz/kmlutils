@@ -10,7 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import tce.xmlxtra.model.Arquivo;
-import tce.xmlxtra.model.ArquivoLink;
+import tbrugz.graphml.model.Link;
 import tbrugz.graphml.model.Root;
 import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
@@ -24,7 +24,7 @@ public class DumpArquivosPADGraphMLModel extends AbstractDump {
 
 	static Log log = LogFactory.getLog(AbstractDump.class);
 
-	List<ArquivoLink> links = new ArrayList<ArquivoLink>();
+	List<Link> links = new ArrayList<Link>();
 	Set<String> nodeNames = new TreeSet<String>();
 	
 	@Override
@@ -41,7 +41,7 @@ public class DumpArquivosPADGraphMLModel extends AbstractDump {
 		else if(elem instanceof Arquivo) {
 			Arquivo a = (Arquivo) elem;
 		    out("<node id=\""+a.getId()+"\">", level);
-			outSnippet("node", level+1, a.getDesc());
+			outSnippet("node", level+1, a.getLabel());
 		    out("</node>", level);
 		    //nodeNames.add(a.getId());
 		    
@@ -51,9 +51,9 @@ public class DumpArquivosPADGraphMLModel extends AbstractDump {
 		    }
 		    links.addAll(ll);*/
 		}
-		else if(elem instanceof ArquivoLink) {
-			ArquivoLink al = (ArquivoLink) elem;
-			out("<edge source=\""+al.getIdOrigem()+"\" target=\""+al.getIdDestino()+"\">", level);
+		else if(elem instanceof Link) {
+			Link al = (Link) elem;
+			out("<edge source=\""+al.getOrigem()+"\" target=\""+al.getsDestino()+"\">", level);
 			outSnippet("edge", level+1);
 			out("</edge>", level);
 		    //nodeNames.add(a.getId());

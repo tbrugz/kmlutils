@@ -1,25 +1,10 @@
 package tce.xmlxtra.model;
 
-import tbrugz.xml.model.skel.Element;
+import tbrugz.graphml.model.Node;
 
-public class Arquivo implements Element {
-	String id;
-	String nome;
+public class Arquivo extends Node {
 	String numeroLei;
-
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
 	public String getNumeroLei() {
 		return numeroLei;
 	}
@@ -27,8 +12,8 @@ public class Arquivo implements Element {
 		this.numeroLei = numeroLei;
 	}
 	
-	public String getDesc() {
-		return getId()+"\n"+getNome()+"\n"+getNumeroLei();
+	@Override
+	public String getLabel() {
+		return getId()+"\n"+super.getLabel()+"\n"+getNumeroLei();
 	}
-	
 }

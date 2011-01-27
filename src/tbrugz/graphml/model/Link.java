@@ -1,6 +1,8 @@
 package tbrugz.graphml.model;
 
-public class Link {
+import tbrugz.xml.model.skel.Element;
+
+public class Link implements Element {
 	String nome;
 	Node destino;
 	String sDestino;
@@ -29,6 +31,10 @@ public class Link {
 	}
 	public void setOrigem(String origem) {
 		this.origem = origem;
+	}
+
+	public String getId() {
+		return origem+"->"+sDestino;
 	}
 	
 }
