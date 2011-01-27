@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import tbrugz.graphml.model.Link;
 import tbrugz.graphml.model.Root;
-import tbrugz.graphml.model.Tela;
+import tbrugz.graphml.model.Node;
 import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;
@@ -29,9 +29,9 @@ public class DumpGXLModel extends AbstractDump {
 		if(elem instanceof Root) {
 			outSnippet("gxl", level);
 		}
-		else if(elem instanceof Tela) {
-			Tela t = (Tela) elem;
-		    out("<node id=\""+t.getCodigo()+"\">", level);
+		else if(elem instanceof Node) {
+			Node t = (Node) elem;
+		    out("<node id=\""+t.getId()+"\">", level);
 		    out("  <type xlink:href=\"http://www.gupro.de/GXL/examples/schema/gxl/simpleExample/simpleExampleSchema.gxl#Proc\" xlink:type=\"simple\"/>", level);
 		    //out("  <attr name=\" file\">", level);
 		    //out("    <string> main.c</string>", level);
@@ -39,7 +39,7 @@ public class DumpGXLModel extends AbstractDump {
 		    out("</node>", level);
 		    List<Link> ll = t.getProx();
 		    for(Link l: ll) {
-		    	l.setOrigem(t.getCodigo());
+		    	l.setOrigem(t.getId());
 		    }
 		    links.addAll(ll);
 		}

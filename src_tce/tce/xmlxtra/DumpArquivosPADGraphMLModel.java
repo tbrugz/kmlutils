@@ -1,4 +1,4 @@
-package tbrugz.graphml;
+package tce.xmlxtra;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -9,9 +9,9 @@ import java.util.TreeSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import tbrugz.graphml.model.Link;
+import tce.xmlxtra.model.Arquivo;
+import tce.xmlxtra.model.ArquivoLink;
 import tbrugz.graphml.model.Root;
-import tbrugz.graphml.model.Node;
 import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;
@@ -20,11 +20,11 @@ import tbrugz.xml.model.skel.Element;
 [WARN] edge target UC096 not found - from: UC081
 [WARN] edge target UC096 not found - from: UC081A
  */
-public class DumpGraphMLModel extends AbstractDump {
+public class DumpArquivosPADGraphMLModel extends AbstractDump {
 
 	static Log log = LogFactory.getLog(AbstractDump.class);
 
-	List<Link> links = new ArrayList<Link>();
+	List<ArquivoLink> links = new ArrayList<ArquivoLink>();
 	Set<String> nodeNames = new TreeSet<String>();
 	
 	@Override
@@ -38,21 +38,28 @@ public class DumpGraphMLModel extends AbstractDump {
 		if(elem instanceof Root) {
 			outSnippet("graphml", level);
 		}
-		else if(elem instanceof Node) {
-			Node t = (Node) elem;
-		    out("<node id=\""+t.getId()+"\">", level);
-			outSnippet("node", level+1, t.getId()+": "+t.getLabel());
+		else if(elem instanceof Arquivo) {
+			Arquivo a = (Arquivo) elem;
+		    out("<node id=\""+a.getId()+"\">", level);
+			outSnippet("node", level+1, a.getDesc());
 		    out("</node>", level);
-		    nodeNames.add(t.getId());
+		    //nodeNames.add(a.getId());
 		    
-		    List<Link> ll = t.getProx();
+		    /*List<Link> ll = t.getProx();
 		    for(Link l: ll) {
-		    	l.setOrigem(t.getId());
+		    	l.setOrigem(t.getCodigo());
 		    }
-		    links.addAll(ll);
+		    links.addAll(ll);*/
+		}
+		else if(elem instanceof ArquivoLink) {
+			ArquivoLink al = (ArquivoLink) elem;
+			out("<edge source=\""+al.getIdOrigem()+"\" target=\""+al.getIdDestino()+"\">", level);
+			outSnippet("edge", level+1);
+			out("</edge>", level);
+		    //nodeNames.add(a.getId());
 		}
 		else {
-			out(">> unknown element: "+elem.getClass().getName(), level);
+			out(">> unknown element: "+elem+" ; "+((elem!=null)?elem.getClass().getName():""), level);
 		}
 		
 		if(elem instanceof Composite) {
@@ -63,8 +70,9 @@ public class DumpGraphMLModel extends AbstractDump {
 
 		//end of processing
 		if(elem instanceof Root) {
+			
 			//edge output
-			for(Link myl: links) {
+			/*for(ArquivoLink myl: links) {
 				if(nodeNames.contains(myl.getsDestino())) {
 					out("<edge source=\""+myl.getOrigem()+"\" target=\""+myl.getsDestino()+"\">", level+1);
 					outSnippet("edge", level+2);
@@ -73,7 +81,7 @@ public class DumpGraphMLModel extends AbstractDump {
 				else {
 					log.warn("edge target "+myl.getsDestino()+" not found - from: "+myl.getOrigem());
 				}
-			}
+			}*/
 			
 			out("</graph></graphml>", level);
 		}

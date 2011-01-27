@@ -5,21 +5,21 @@ import java.util.ArrayList;
 
 import tbrugz.xml.model.skel.Element;
 
-public class Tela implements Element {
+public class Node implements Element {
 
-	String codigo;
+	String id;
+	String label;
+	boolean initialNode;
+	boolean finalNode;
+	
 	List<Link> prox = new ArrayList<Link>();
 	
 	public String getId() {
-		return getCodigo();
+		return id;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public List<Link> getProx() {
@@ -30,5 +30,12 @@ public class Tela implements Element {
 		this.prox = prox;
 	}
 
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
 	
 }

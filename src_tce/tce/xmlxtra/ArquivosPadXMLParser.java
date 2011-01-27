@@ -1,14 +1,8 @@
-package tbrugz.graphml;
+package tce.xmlxtra;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -20,23 +14,24 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import tbrugz.graphml.model.Link;
+import tce.xmlxtra.model.Arquivo;
+import tce.xmlxtra.model.ArquivoLink;
 import tbrugz.graphml.model.Root;
-import tbrugz.graphml.model.Tela;
-import tbrugz.xml.model.skel.Composite;
 
-public class ConfigTelasXMLParser extends DefaultHandler {
+public class ArquivosPadXMLParser extends DefaultHandler {
 	
-	public static String ROOT = "config-telas";
-	public static String TELA = "tela";
+	public static String ROOT = "arquivos";
+	public static String NODE = "arquivo";
 	
-	public static String ANY_ID = "id";
+	//public static String ANY_ID = "id";
 	
 	Root root = null;
-	Composite lastGroupParsed = null;
+	//Composite lastGroupParsed = null;
+	List<Arquivo> nodes = new ArrayList<Arquivo>();
+	List<ArquivoLink> links = new ArrayList<ArquivoLink>();
 	int nestLevel = 0;
 	
-	static Log log = LogFactory.getLog(ConfigTelasXMLParser.class);
+	static Log log = LogFactory.getLog(ArquivosPadXMLParser.class);
 
 	public Root parseDocument(String file) {
 		//get a factory
@@ -66,7 +61,7 @@ public class ConfigTelasXMLParser extends DefaultHandler {
 		if(qName.equalsIgnoreCase(ROOT)) {
 			if(root==null) {
 				root = new Root();
-				lastGroupParsed = root;
+				//lastGroupParsed = root;
 
 				log.debug("<"+ROOT+"> processed, l:"+nestLevel);
 				nestLevel++;
@@ -76,15 +71,31 @@ public class ConfigTelasXMLParser extends DefaultHandler {
 			}
 		}
 		
-		if(qName.equalsIgnoreCase(TELA)) {
-			Tela t = new Tela();
-			lastGroupParsed.getChildren().add(t);
-			String codigo = attributes.getValue("codigo");
-			String prox = attributes.getValue("proxima-tela");
-			String decisaoproxima = attributes.getValue("decisao-proxima");
-			t.setCodigo(codigo);
+		if(qName.equalsIgnoreCase(NODE)) {
+			Arquivo aa = new Arquivo();
+			//lastGroupParsed.getChildren().add(aa);
+			String identificador = attributes.getValue("identificador");
+			String nomeCompleto = attributes.getValue("nome-completo");
+			//String prox = attributes.getValue("proxima-tela");
+			String numeroLei = attributes.getValue("numero-lei");
+			String depende = attributes.getValue("depende");
 			
-			if(prox!=null) {
+			aa.setId(identificador);
+			aa.setNome(nomeCompleto);
+			aa.setNumeroLei(numeroLei);
+			nodes.add(aa);
+			
+			if(depende!=null && !depende.equals("")) {
+				String[] deps = depende.split(",");
+				for(String s: deps) {
+					ArquivoLink link = new ArquivoLink();
+					link.setIdOrigem(identificador);
+					link.setIdDestino(s.trim());
+					links.add(link);
+				}
+			}
+			
+			/*if(prox!=null) {
 				Link l = new Link();
 				l.setsDestino(prox);
 				ArrayList<Link> al = new ArrayList<Link>();
@@ -95,7 +106,7 @@ public class ConfigTelasXMLParser extends DefaultHandler {
 				String parts[] = decisaoproxima.split("\\.");
 				Set<String> proxs = null;
 				try {
-					proxs = procDecisao(parts[parts.length-1]);
+					proxs = procDecisao(parts[parts.length-1], pConstantesTelasNaoPadrao);
 					log.debug("l: "+proxs);
 					List<Link> outs = new ArrayList<Link>();
 					for(String s: proxs) {
@@ -108,50 +119,25 @@ public class ConfigTelasXMLParser extends DefaultHandler {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 			
-			log.trace("<"+TELA+"> processed, l:"+nestLevel);
+			log.trace("<"+NODE+"> processed, l:"+nestLevel);
 		}
-	}
-	
-	Pattern pConstantesTelas = Pattern.compile("(ConstantesTelas\\.UC\\w+)");
-	
-	Set<String> procDecisao(String file) throws IOException {
-		File f = new File("work/input/tmp/tela/"+file+".java");
-		long length = f.length();
-		char[] cb = new char[(int)length];
-		//CharBuffer cb = CharBuffer.allocate((int)length);
-		FileReader fr = new FileReader(f);
-		int iread = fr.read(cb);
-		String scontent = new String(cb); //cb.toString();
-		
-		//retirando comentários - "/* */", "//" 
-		scontent = Pattern.compile("/\\*.*?\\*/", Pattern.DOTALL).matcher(scontent).replaceAll("");
-		scontent = scontent.replaceAll("//.*", "");
-		
-		Matcher m = pConstantesTelas.matcher(scontent);
-		int count = m.groupCount();
-		log.debug("count = "+count+" // f:"+f+";"+length+";read:"+iread);
-		//log.debug(scontent);
-
-		Set<String> ret = new TreeSet<String>(); 
-		while(m.find()) {
-			//log.debug("i = "+i);
-			String s = m.group();
-			ret.add(s);
-		}
-		return ret;
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if(qName.equalsIgnoreCase(ROOT)) {
 			nestLevel--;
+
+			root.elements.addAll(nodes);
+			root.elements.addAll(links);
+
 			log.debug("</"+ROOT+"> processed, l:"+nestLevel);
 		}
 
-		if(qName.equalsIgnoreCase(TELA)) {
-			log.trace("</"+TELA+"> processed, l:"+nestLevel);
+		if(qName.equalsIgnoreCase(NODE)) {
+			log.trace("</"+NODE+"> processed, l:"+nestLevel);
 		}
 	}
 

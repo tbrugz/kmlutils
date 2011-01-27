@@ -1,4 +1,4 @@
-package tbrugz.graphml;
+package tbrugz.xml.test;
 
 import java.util.Properties;
 import java.util.regex.Pattern;

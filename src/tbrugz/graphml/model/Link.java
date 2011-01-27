@@ -2,7 +2,7 @@ package tbrugz.graphml.model;
 
 public class Link {
 	String nome;
-	Tela destino;
+	Node destino;
 	String sDestino;
 	String origem;
 
@@ -12,10 +12,10 @@ public class Link {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public Tela getDestino() {
+	public Node getDestino() {
 		return destino;
 	}
-	public void setDestino(Tela destino) {
+	public void setDestino(Node destino) {
 		this.destino = destino;
 	}
 	public String getsDestino() {
