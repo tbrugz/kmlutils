@@ -40,16 +40,17 @@ public class DumpGraphMLModel extends AbstractDump {
 		}
 		else if(elem instanceof Node) {
 			Node t = (Node) elem;
-		    out("<node id=\""+t.getId()+"\">", level);
-			outSnippet("node", level+1, t.getId()+": "+t.getLabel());
-		    out("</node>", level);
-		    nodeNames.add(t.getId());
-		    
-		    List<Link> ll = t.getProx();
-		    for(Link l: ll) {
-		    	l.setOrigem(t.getId());
-		    }
-		    links.addAll(ll);
+			out("<node id=\""+t.getId()+"\">", level);
+			outNodeContents(t, level+1);
+			//outSnippet("node", level+1, t.getLabel());
+			out("</node>", level);
+			nodeNames.add(t.getId());
+
+			List<Link> ll = t.getProx();
+			for(Link l: ll) {
+				l.setOrigem(t.getId());
+			}
+			links.addAll(ll);
 		}
 		else {
 			out(">> unknown element: "+elem.getClass().getName(), level);
@@ -67,7 +68,8 @@ public class DumpGraphMLModel extends AbstractDump {
 			for(Link myl: links) {
 				if(nodeNames.contains(myl.getsDestino())) {
 					out("<edge source=\""+myl.getOrigem()+"\" target=\""+myl.getsDestino()+"\">", level+1);
-					outSnippet("edge", level+2);
+					outEdgeContents(myl, level+2);
+					//outSnippet("edge", level+2);
 					out("</edge>", level+1);
 				}
 				else {
@@ -77,5 +79,13 @@ public class DumpGraphMLModel extends AbstractDump {
 			
 			out("</graph></graphml>", level);
 		}
+	}
+	
+	public void outNodeContents(Node t, int level) {
+		outSnippet("node", level, t.getLabel());
+	}
+
+	public void outEdgeContents(Link l, int level) {
+		outSnippet("edge", level);
 	}
 }
