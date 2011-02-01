@@ -3,38 +3,42 @@ package tbrugz.graphml.model;
 import tbrugz.xml.model.skel.Element;
 
 public class Link implements Element {
-	String nome;
-	Node destino;
-	String sDestino;
-	String origem;
+	String name;
+	//Node source;
+	//Node target;
+	String target;
+	String source;
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String nome) {
+		this.name = nome;
 	}
-	public Node getDestino() {
-		return destino;
+	/*public Node getTarget() {
+		return target;
 	}
-	public void setDestino(Node destino) {
-		this.destino = destino;
+	public void setTarget(Node destino) {
+		this.target = destino;
+	}*/
+	public String getTarget() {
+		return target;
 	}
-	public String getsDestino() {
-		return sDestino;
+	public void setTarget(String sTarget) {
+		this.target = sTarget;
 	}
-	public void setsDestino(String sDestino) {
-		this.sDestino = sDestino;
+	public String getSource() {
+		return source;
 	}
-	public String getOrigem() {
-		return origem;
-	}
-	public void setOrigem(String origem) {
-		this.origem = origem;
+	public void setSource(String sSource) {
+		this.source = sSource;
 	}
 
 	public String getId() {
-		return origem+"->"+sDestino;
+		return name;
+	}
+	public String toString() {
+		return source+"->"+target;
 	}
 	
 }

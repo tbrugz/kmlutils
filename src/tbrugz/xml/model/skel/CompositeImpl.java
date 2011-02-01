@@ -14,7 +14,7 @@ public class CompositeImpl implements Composite {
 		this.id = id;
 	}
 
-	public List<Element> elements = new ArrayList<Element>();
+	List<Element> elements = new ArrayList<Element>();
 
 	public List<Element> getChildren() {
 		return elements;

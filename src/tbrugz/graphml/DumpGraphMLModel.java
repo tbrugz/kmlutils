@@ -24,7 +24,7 @@ public class DumpGraphMLModel extends AbstractDump {
 
 	static Log log = LogFactory.getLog(AbstractDump.class);
 
-	List<Link> links = new ArrayList<Link>();
+	//List<Link> links = new ArrayList<Link>();
 	Set<String> nodeNames = new TreeSet<String>();
 	
 	@Override
@@ -42,15 +42,21 @@ public class DumpGraphMLModel extends AbstractDump {
 			Node t = (Node) elem;
 			out("<node id=\""+t.getId()+"\">", level);
 			outNodeContents(t, level+1);
-			//outSnippet("node", level+1, t.getLabel());
 			out("</node>", level);
 			nodeNames.add(t.getId());
 
-			List<Link> ll = t.getProx();
+			/*List<Link> ll = t.getProx();
 			for(Link l: ll) {
-				l.setOrigem(t.getId());
+				l.setSource(t.getId());
 			}
-			links.addAll(ll);
+			links.addAll(ll);*/
+		}
+		else if(elem instanceof Link) {
+			Link myl = (Link) elem;
+			out("<edge source=\""+myl.getSource()+"\" target=\""+myl.getTarget()+"\">", level);
+			outEdgeContents(myl, level+1);
+			//outSnippet("edge", level+2);
+			out("</edge>", level);
 		}
 		else {
 			out(">> unknown element: "+elem.getClass().getName(), level);
@@ -65,17 +71,17 @@ public class DumpGraphMLModel extends AbstractDump {
 		//end of processing
 		if(elem instanceof Root) {
 			//edge output
-			for(Link myl: links) {
-				if(nodeNames.contains(myl.getsDestino())) {
-					out("<edge source=\""+myl.getOrigem()+"\" target=\""+myl.getsDestino()+"\">", level+1);
+			/*for(Link myl: links) {
+				if(nodeNames.contains(myl.getsTarget())) {
+					out("<edge source=\""+myl.getSource()+"\" target=\""+myl.getsTarget()+"\">", level+1);
 					outEdgeContents(myl, level+2);
 					//outSnippet("edge", level+2);
 					out("</edge>", level+1);
 				}
 				else {
-					log.warn("edge target "+myl.getsDestino()+" not found - from: "+myl.getOrigem());
+					log.warn("edge target "+myl.getsTarget()+" not found - from: "+myl.getSource());
 				}
-			}
+			}*/
 			
 			out("</graph></graphml>", level);
 		}

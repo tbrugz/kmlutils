@@ -12,7 +12,7 @@ public class Node implements Element {
 	boolean initialNode;
 	boolean finalNode;
 	
-	List<Link> prox = new ArrayList<Link>();
+	//List<Link> prox = new ArrayList<Link>();
 	
 	public String getId() {
 		return id;
@@ -22,13 +22,13 @@ public class Node implements Element {
 		this.id = id;
 	}
 
-	public List<Link> getProx() {
+	/*public List<Link> getProx() {
 		return prox;
 	}
 
 	public void setProx(List<Link> prox) {
 		this.prox = prox;
-	}
+	}*/
 
 	public String getLabel() {
 		return label;

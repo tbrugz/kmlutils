@@ -16,7 +16,7 @@ public class DumpGXLModel extends AbstractDump {
 
 	Properties snippets = new Properties();
 	
-	List<Link> links = new ArrayList<Link>();
+	//List<Link> links = new ArrayList<Link>();
 	
 	@Override
 	public void dumpModel(Element root, PrintStream out) {
@@ -33,15 +33,18 @@ public class DumpGXLModel extends AbstractDump {
 			Node t = (Node) elem;
 		    out("<node id=\""+t.getId()+"\">", level);
 		    out("  <type xlink:href=\"http://www.gupro.de/GXL/examples/schema/gxl/simpleExample/simpleExampleSchema.gxl#Proc\" xlink:type=\"simple\"/>", level);
-		    //out("  <attr name=\" file\">", level);
-		    //out("    <string> main.c</string>", level);
-		    //out("  </attr>", level);
 		    out("</node>", level);
-		    List<Link> ll = t.getProx();
+		    /*List<Link> ll = t.getProx();
 		    for(Link l: ll) {
-		    	l.setOrigem(t.getId());
+		    	l.setSource(t.getId());
 		    }
-		    links.addAll(ll);
+		    links.addAll(ll);*/
+		}
+		else if(elem instanceof Link) {
+			Link myl = (Link) elem;
+			out("<edge id=\""+myl.getSource()+"_"+myl.getTarget()+"\" to=\""+myl.getTarget()+"\" from=\""+myl.getSource()+"\">", level+1);
+			out("  <type xlink:href=\"http://www.gupro.de/GXL/examples/schema/gxl/simpleExample/simpleExampleSchema.gxl#Call\" xlink:type=\" simple\"/>", level+1);
+			out("</edge>", level+1);
 		}
 		else {
 			out(">> unknown element: "+elem.getClass().getName(), level);
@@ -54,11 +57,11 @@ public class DumpGXLModel extends AbstractDump {
 		}
 
 		if(elem instanceof Root) {
-			for(Link myl: links) {
-				out("<edge id=\""+myl.getOrigem()+"_"+myl.getsDestino()+"\" to=\""+myl.getsDestino()+"\" from=\""+myl.getOrigem()+"\">", level+1);
+			/*for(Link myl: links) {
+				out("<edge id=\""+myl.getSource()+"_"+myl.getsTarget()+"\" to=\""+myl.getsTarget()+"\" from=\""+myl.getSource()+"\">", level+1);
 				out("  <type xlink:href=\"http://www.gupro.de/GXL/examples/schema/gxl/simpleExample/simpleExampleSchema.gxl#Call\" xlink:type=\" simple\"/>", level+1);
 				out("</edge>", level+1);
-			}
+			}*/
 			
 			out("</graph></gxl>", level);
 		}
