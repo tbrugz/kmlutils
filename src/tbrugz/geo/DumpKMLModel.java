@@ -50,13 +50,12 @@ public class DumpKMLModel extends AbstractDump {
 					getProp(elem.getId(), "lat")
 					);
 
-			//setting centre
+			//XXX: centroid?
 			//out("<Point><coordinates>"+polygon.centre.x+","+polygon.centre.y+",0</coordinates></Point>", level);
 
 			outSnippet("Polygon", level+1, getId(elem.getId()), b.toString());
 			
 			outSnippet("Placemark.end", level); 
-			//out("</Placemark>", level);
 		}
 		else {
 			log.warn("unknown element: "+elem.getClass().getName());
@@ -71,11 +70,9 @@ public class DumpKMLModel extends AbstractDump {
 
 		if(elem instanceof Root) {
 			outSnippet("Document.end", level); 
-			//out("</Document></kml>", level);
 		}
 		else if(elem instanceof Group) {
 			outSnippet("Folder.end", level); 
-			//out("</Folder>", level);
 		}
 	}
 	
@@ -89,11 +86,6 @@ public class DumpKMLModel extends AbstractDump {
 
 	String getName(String inputId) {
 		return getProp(inputId, "name", getId(inputId));
-		/*if(idMappings==null) return inputId;
-		String outputName = idMappings.getProperty(inputId+".name");
-		
-		if(outputName != null) return outputName;
-		return getId(inputId);*/
 	}
 
 	String getProp(String inputId, String prop) {
@@ -106,15 +98,9 @@ public class DumpKMLModel extends AbstractDump {
 		
 		if(outputName != null) return outputName;
 		return defaultValue;
-		//return "Município "+getId(inputId);
 	}
 	
 	String getStyle(String inputId) {
 		return getProp(inputId, "styleId", getId(inputId));
-		/*if(idMappings==null) return null;
-		String outputStyleId = idMappings.getProperty(inputId+".styleId");
-		
-		if(outputStyleId != null) return outputStyleId;
-		return null;*/
 	}
 }
