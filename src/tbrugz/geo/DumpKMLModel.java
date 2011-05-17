@@ -42,17 +42,25 @@ public class DumpKMLModel extends AbstractDump {
 				b.append(p.x+","+p.y+",0 ");
 			}
 
-			outSnippet("Placemark", level, getId(elem.getId()), getName(elem.getId()));
+			outSnippet("Placemark", level, 
+					getId(elem.getId()), 
+					getName(elem.getId()), 
+					getProp(elem.getId(), "description", "#id = "+getId(elem.getId())),
+					getProp(elem.getId(), "long"),
+					getProp(elem.getId(), "lat")
+					);
 
 			//setting centre
 			//out("<Point><coordinates>"+polygon.centre.x+","+polygon.centre.y+",0</coordinates></Point>", level);
 
 			outSnippet("Polygon", level+1, getId(elem.getId()), b.toString());
 			
-			out("</Placemark>", level);
+			outSnippet("Placemark.end", level); 
+			//out("</Placemark>", level);
 		}
 		else {
-			out(">> unknown element: "+elem.getClass().getName(), level);
+			log.warn("unknown element: "+elem.getClass().getName());
+			//out(">> unknown element: "+elem.getClass().getName(), level);
 		}
 		
 		if(elem instanceof Composite) {
@@ -62,10 +70,12 @@ public class DumpKMLModel extends AbstractDump {
 		}
 
 		if(elem instanceof Root) {
-			out("</Document></kml>", level);
+			outSnippet("Document.end", level); 
+			//out("</Document></kml>", level);
 		}
 		else if(elem instanceof Group) {
-			out("</Folder>", level);
+			outSnippet("Folder.end", level); 
+			//out("</Folder>", level);
 		}
 	}
 	
@@ -78,18 +88,33 @@ public class DumpKMLModel extends AbstractDump {
 	}
 
 	String getName(String inputId) {
-		if(idMappings==null) return inputId;
+		return getProp(inputId, "name", getId(inputId));
+		/*if(idMappings==null) return inputId;
 		String outputName = idMappings.getProperty(inputId+".name");
 		
 		if(outputName != null) return outputName;
-		return getId(inputId);
+		return getId(inputId);*/
 	}
 
+	String getProp(String inputId, String prop) {
+		return getProp(inputId, prop, getId(inputId));
+	}
+	
+	String getProp(String inputId, String prop, String defaultValue) {
+		if(idMappings==null) return inputId;
+		String outputName = idMappings.getProperty(inputId+"."+prop); //description
+		
+		if(outputName != null) return outputName;
+		return defaultValue;
+		//return "Município "+getId(inputId);
+	}
+	
 	String getStyle(String inputId) {
-		if(idMappings==null) return null;
+		return getProp(inputId, "styleId", getId(inputId));
+		/*if(idMappings==null) return null;
 		String outputStyleId = idMappings.getProperty(inputId+".styleId");
 		
 		if(outputStyleId != null) return outputStyleId;
-		return null;
+		return null;*/
 	}
 }
