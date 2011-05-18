@@ -67,6 +67,9 @@ public abstract class AbstractDump {
 				//matcher.replaceFirst(replacement);
 				//matcher = paramPattern.matcher(s);
 			}
+			else {
+				//TODO: handle null ids
+			}
 		}
 		
 		/*if(params!=null) {

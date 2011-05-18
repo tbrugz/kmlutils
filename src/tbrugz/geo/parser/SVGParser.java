@@ -139,7 +139,16 @@ public class SVGParser extends DefaultHandler {
 		//spf.setNamespaceAware(false);
 		//spf.setSchema(null);
 		String LOAD_EXTERNAL_DTD_FEATURE = Constants.XERCES_FEATURE_PREFIX + Constants.LOAD_EXTERNAL_DTD_FEATURE;
-		//"http://apache.org/xml/features/"+"nonvalidating/load-external-dtd"
+		
+		/*
+		 * about validating:
+		 * LOAD_EXTERNAL_DTD_FEATURE = "http://apache.org/xml/features/"+"nonvalidating/load-external-dtd"
+		 * http://www.coderanch.com/t/128153/XML/SAXParser-not-Validating
+		 * http://sax.sourceforge.net/?selected=get-set
+		 * http://www.ibm.com/developerworks/library/x-tipvalschm/
+		 * http://www.ibm.com/developerworks/xml/library/x-tipsaxp/
+		 * 
+		 */
         
 		try {
 			spf.setFeature(LOAD_EXTERNAL_DTD_FEATURE, false);
