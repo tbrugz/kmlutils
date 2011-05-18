@@ -43,17 +43,18 @@ public class DumpKMLModel extends AbstractDump {
 			}
 
 			outSnippet("Placemark", level, 
-					getId(elem.getId()), 
-					getName(elem.getId()), 
-					getProp(elem.getId(), "description", "#id = "+getId(elem.getId())),
-					getProp(elem.getId(), "long"),
-					getProp(elem.getId(), "lat")
+					getId(elem.getId()), //{0}
+					getName(elem.getId()), //{1} 
+					getProp(elem.getId(), "description", "#id = "+getId(elem.getId())), //{2}
+					getProp(elem.getId(), "long"), //{3}
+					getProp(elem.getId(), "lat"), //{4}
+					b.toString() //polygon border, {5}
 					);
 
 			//XXX: centroid?
 			//out("<Point><coordinates>"+polygon.centre.x+","+polygon.centre.y+",0</coordinates></Point>", level);
 
-			outSnippet("Polygon", level+1, getId(elem.getId()), b.toString());
+			//outSnippet("Polygon", level+1, getId(elem.getId()), b.toString());
 			
 			outSnippet("Placemark.end", level); 
 		}
