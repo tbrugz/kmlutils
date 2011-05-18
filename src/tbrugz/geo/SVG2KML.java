@@ -15,6 +15,7 @@ public class SVG2KML {
 	static Log log = LogFactory.getLog(SVG2KML.class);
 
 	public static void main(String[] args) throws IOException {
+		long initTime = System.currentTimeMillis();
 		Properties prop = new Properties();
 		prop.load(new FileInputStream("svg2kml.properties"));
 		String fileIn = prop.getProperty("svg2kml.svgin");
@@ -46,7 +47,7 @@ public class SVG2KML {
 		//dm.dumpModel(root, new PrintStream("work/output/Municipalities_of_RS_out.kml"));
 		dm.dumpModel(root, new PrintStream(fileOut));
 
-		log.info("write done...");
+		log.info("write done... time elapsed: "+(System.currentTimeMillis()-initTime)+"ms");
 	}
 
 }

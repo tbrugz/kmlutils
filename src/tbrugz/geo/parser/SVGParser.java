@@ -1,6 +1,8 @@
 package tbrugz.geo.parser;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -12,11 +14,108 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.sun.org.apache.xerces.internal.impl.Constants;
+
 import tbrugz.geo.model.Group;
 import tbrugz.geo.model.Point;
 import tbrugz.geo.model.Polygon;
 import tbrugz.geo.model.Root;
 import tbrugz.xml.model.skel.Composite;
+
+class SVGPathStringReader {
+	StringBuffer sb;
+	int pos = 0;
+
+	static Log log = LogFactory.getLog(SVGPathStringReader.class);
+	
+	static final String SPACE = " ";
+	static final String COMMA = ",";
+	static List<String> NUMBERS = new ArrayList<String>(); // = {"0","1","2","3","4","5","6","7","8","9"};
+	static List<String> LETTERS = new ArrayList<String>();
+	static List<String> DELIMITERS = new ArrayList<String>();
+	static List<String> NUMBERS_OR_DELIMITER = new ArrayList<String>();
+	static List<String> LETTERS_OR_DELIMITER = new ArrayList<String>();
+	
+	static final String[] KNOWN_SVG_LETTERS = {"m", "l", "z", "c"};
+	
+	static {
+		DELIMITERS.add(SPACE);
+		DELIMITERS.add(COMMA);
+		
+		for(int i=0;i<=9;i++) {
+			NUMBERS.add(String.valueOf(i));
+		}
+		NUMBERS.add("-");
+		NUMBERS.add(".");
+
+		for(String s: KNOWN_SVG_LETTERS) {
+			LETTERS.add(s);
+			LETTERS.add(s.toUpperCase());
+		}		
+		
+		NUMBERS_OR_DELIMITER.addAll(NUMBERS);
+		NUMBERS_OR_DELIMITER.addAll(DELIMITERS);
+		
+		LETTERS_OR_DELIMITER.addAll(LETTERS);
+		LETTERS_OR_DELIMITER.addAll(DELIMITERS);
+	}
+	
+	public SVGPathStringReader(String s) {
+		sb = new StringBuffer(s);
+	}
+	
+	static int indexOf(StringBuffer str, List<String> delimiters, int startWith) {
+		int pos = str.length();
+		for(String sd: delimiters) {
+			int i = str.indexOf(sd, startWith);
+			if(i!=-1 && i<pos) { pos = i; }
+			//log.trace("indexOf: "+str+" \n  sd: "+sd+"; i:"+i+"; pos:"+pos+" // "+delimiters);
+		}
+		
+		if(pos == str.length()) {
+			return -1;
+		}
+		//log.trace("indexOf: "+str+" \n  pos:"+pos+" // "+delimiters);
+		return pos;
+	}
+	
+	/*public String readLetters() {
+		int i = indexOf(sb, NUMBERS_OR_DELIMITER, pos);
+		if(i==-1) return null;
+		if(i==0) return "";
+		
+		String substr = sb.substring(pos, i);
+		pos = i;
+		//System.out.println("read: "+substr);
+		return substr;
+	}*/
+
+	public String readLetter() {
+		int i = indexOf(sb, NUMBERS_OR_DELIMITER, pos);
+		if(i==-1) return null;
+		if(i==0) return "";
+		
+		String substr = sb.substring(pos, pos+1);
+		pos++;
+		//log.trace("readL: "+substr);
+		return substr;
+	}
+	
+	public String readNumbers() {
+		int firstNumber = indexOf(sb, NUMBERS, pos);
+		if(firstNumber==-1) return null;
+		
+		int i = indexOf(sb, LETTERS_OR_DELIMITER, firstNumber);
+		if(i==-1) return null;
+		if(i==0) return "";
+
+		//log.trace("readN: "+pos+"; "+i);
+		String substr = sb.substring(firstNumber, i);
+		pos = i;
+		//log.trace("read: "+substr);
+		return substr;
+	}
+}
 
 public class SVGParser extends DefaultHandler {
 	
@@ -36,11 +135,23 @@ public class SVGParser extends DefaultHandler {
 	public Root parseDocument(String file) {
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
+		spf.setValidating(false);  
+		//spf.setNamespaceAware(false);
+		//spf.setSchema(null);
+		String LOAD_EXTERNAL_DTD_FEATURE = Constants.XERCES_FEATURE_PREFIX + Constants.LOAD_EXTERNAL_DTD_FEATURE;
+		//"http://apache.org/xml/features/"+"nonvalidating/load-external-dtd"
+        
 		try {
+			spf.setFeature(LOAD_EXTERNAL_DTD_FEATURE, false);
 
 			//get a new instance of parser
 			SAXParser sp = spf.newSAXParser();
+			
+			// Turn off validation
+			//sp.setProperty("http://xml.org/sax/features/validation", false); //setFeature("http://xml.org/sax/features/validation", true);
 
+			log.info("is saxParser validating? " + sp.isValidating());
+			
 			//parse the file and also register this class for call backs
 			sp.parse(file, this);
 
@@ -91,9 +202,10 @@ public class SVGParser extends DefaultHandler {
 			lastGroupParsed.getChildren().add(p);
 			p.setId(id);
 			String pointsStr = attributes.getValue(PATH_D);
+			//TODO: polygonS
 			procPolygon(p, pointsStr);
 			
-			log.trace("<path> processed, l:"+nestLevel);
+			log.trace("<path> processed, l:"+nestLevel+"; id:"+id);
 			log.trace("<path>'s d:"+pointsStr);
 		}
 	}
@@ -123,6 +235,88 @@ public class SVGParser extends DefaultHandler {
 	}
 
 	void procPolygon(Polygon polygon, String pointsStr) {
+		//TODO: add polygon attrs.
+		SVGPathStringReader sr = new SVGPathStringReader(pointsStr);
+		
+		/*
+		 * state's:
+		 * 
+		 * 0 - wait for letter
+		 * 1 - wait for 1st point
+		 * 2 - wait for 1st point
+		 * 9 - end
+		 * 
+		 */
+		int state = 0;
+		char lastLetter = '0';
+		Point point = new Point();
+		String token = "";
+		
+		for(;token!=null;) {
+			if(state==0) {
+				token = sr.readLetter();
+				//log.warn("token = "+token);
+				
+				if(token==null) { break; }
+				if(token.equals("") || token.equals(" ")) {
+					//do nothing... ?
+					if(lastLetter == '0') {
+						log.warn("PATH.D: token list must start with letter [token="+token+"]");
+					}
+					state = 1;
+				}
+				else if(token.equalsIgnoreCase("L") || token.equalsIgnoreCase("M")) {
+					state = 1;
+					lastLetter = token.charAt(0);
+				}
+				else if(token.equalsIgnoreCase("Z")) {
+					polygon.points.add(polygon.points.get(0)); //what if it has no points?
+					state = 9; //XXX: 0?
+					lastLetter = token.charAt(0);
+				}
+				else if(token.equalsIgnoreCase("C")) {
+					log.warn("PATH.D: not processed token ["+token+"]");
+					state = 1;
+					lastLetter = token.charAt(0);
+				}
+				else {
+					log.warn("PATH.D: unkown token: ["+token+"] [state0]");
+				}
+			}
+			
+			if(state==1) {
+				token = sr.readNumbers();
+				if(token==null) { break; }
+				point.x = Float.parseFloat(token);
+
+				state = 2;
+			}
+
+			if(state==2) {
+				token = sr.readNumbers();
+				point.y = Float.parseFloat(token);
+				polygon.points.add((Point)point.clone());
+				setXYMaxMin(point);
+
+				state = 0;
+			}
+			
+			if(state!=0 && state!=1 && state!=2) {
+				if(state == 9) {
+					//do nothing
+					break;
+				}
+				else {
+					log.warn("PATH.D: Unespected state: "+state+", token: "+token);
+				}
+			}
+		}
+		
+		setPolygonCentre(polygon);
+	}
+
+	@Deprecated
+	void oldProcPolygon(Polygon polygon, String pointsStr) {
 		//TODO: add polygon attrs.
 		String[] ps = pointsStr.split("\\s");
 		//Point firstPoint = null;
@@ -186,7 +380,7 @@ public class SVGParser extends DefaultHandler {
 		if(p.x < root.minX) root.minX = p.x;
 		if(p.y < root.minY) root.minY = p.y;
 	}
-
+	
 }
 
 /*
