@@ -15,6 +15,31 @@
 	<target name="build" depends="prepare, compile">
 		<mkdir dir="dist"/>
 		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
-    </target>
+	</target>
 
+	<target name="kml-validate">
+		<!--
+		http://ant.apache.org/manual/Tasks/xmlvalidate.html
+		http://ant.apache.org/manual/Tasks/schemavalidate.html
+		-->
+		<!--xmlvalidate failonerror="yes" lenient="no" warn="yes">
+			<fileset dir="work/output" includes="**/*.kml"/>
+			<attribute name="http://xml.org/sax/features/validation" value="true"/>
+		</xmlvalidate-->
+		<!--schemavalidate noNamespaceFile="xsd/kml21.xsd">
+			<fileset dir="work/output" includes="**/*.kml"/>
+		</schemavalidate-->
+		<schemavalidate failonerror="false">
+			<schema namespace="http://earth.google.com/kml/2.0" file="xsd/kml20.xsd" />
+			<schema namespace="http://earth.google.com/kml/2.1" file="xsd/kml21.xsd" />
+			<schema namespace="http://www.opengis.net/kml/2.2" file="xsd/ogckml22.xsd" />
+			
+			<!-- needed for kml 2.2 -->
+			<schema namespace="http://www.w3.org/2005/Atom" file="xsd/atom-author-link.xsd" />
+			<schema namespace="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0" file="xsd/xAL.xsd" />
+			
+			<fileset dir="work/output" includes="**/*.kml" />
+		</schemavalidate>
+	</target>
+	
 </project>
