@@ -32,8 +32,15 @@ KML Schema - urls:
 http://schemas.opengis.net/kml/2.2.0/
 http://code.google.com/intl/pt-BR/apis/kml/schema/kml21.xsd
 
+
 running - classes with main()
 -----------------------------
-- tbrugz.geo.SVG2KML
+- tbrugz.geo.SVG2KML (main)
 - tbrugz.geo.test.Test
 - tbrugz.xml.test.Test
+
+
+changelog?
+---------
+see: 
+https://bitbucket.org/tbrugz/kmlutils/changesets

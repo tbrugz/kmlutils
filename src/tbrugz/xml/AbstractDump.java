@@ -100,7 +100,7 @@ public abstract class AbstractDump {
 	}
 	
 	public void out(String s, int nestLevel) {
-		for(int i=0;i<nestLevel;i++) output.print(levelStr);
+		for(int i=0;i<nestLevel;i++) { output.print(levelStr); }
 		output.println(s);
 	}
 	
