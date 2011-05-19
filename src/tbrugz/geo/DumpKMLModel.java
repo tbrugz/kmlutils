@@ -2,6 +2,8 @@ package tbrugz.geo;
 
 import java.io.PrintStream;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,11 +16,24 @@ import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;
 
+class StringUniquener {
+	Set<String> stringSet = new TreeSet<String>();
+	
+	public String getUnique(String s) {
+		if(stringSet.contains(s)) {
+			return getUnique(s+"z");
+		}
+		stringSet.add(s);
+		return s;
+	}
+}
+
 public class DumpKMLModel extends AbstractDump {
 
 	static Log log = LogFactory.getLog(DumpKMLModel.class);
 
 	Properties idMappings = new Properties();
+	StringUniquener uniqueIds = new StringUniquener();
 	
 	@Override
 	public void dumpModel(Element root, PrintStream out) {
@@ -33,10 +48,10 @@ public class DumpKMLModel extends AbstractDump {
 	@Override
 	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
-			outSnippet("Document", level, getId(elem.getId()), getName(elem.getId()) );
+			outSnippet("Document", level, uniqueIds.getUnique( normalizeId( getId(elem.getId()) ) ), getName(elem.getId()) );
 		}
 		else if(elem instanceof Group) {
-			outSnippet("Folder", level, getId(elem.getId()), getName(elem.getId()));
+			outSnippet("Folder", level, uniqueIds.getUnique( normalizeId( getId(elem.getId()) ) ), getName(elem.getId()));
 		}
 		else if(elem instanceof Polygon) {
 			Polygon polygon = ((Polygon)elem);
@@ -44,9 +59,11 @@ public class DumpKMLModel extends AbstractDump {
 			for(Point p: polygon.points) {
 				b.append(p.x+","+p.y+",0 ");
 			}
+			//adding first point again for a closed Polygon
+			b.append(polygon.points.get(0).x+","+polygon.points.get(0).y+",0 ");
 
 			outSnippet("Placemark", level, 
-					getId(elem.getId()), //{0}
+					uniqueIds.getUnique( normalizeId( getId(elem.getId()) ) ), //{0}
 					getName(elem.getId()), //{1} 
 					getProp(elem.getId(), "description", "#id = "+getId(elem.getId())), //{2}
 					getProp(elem.getId(), "long"), //{3}
@@ -107,4 +124,10 @@ public class DumpKMLModel extends AbstractDump {
 	String getStyle(String inputId) {
 		return getProp(inputId, "styleId", getId(inputId));
 	}
+	
+	static String normalizeId(String s) {
+		if(s==null) return "idnull";
+		return s.replaceAll(" ", "-");
+	}
+	
 }

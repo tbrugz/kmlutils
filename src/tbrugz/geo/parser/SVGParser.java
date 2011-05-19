@@ -275,16 +275,19 @@ public class SVGParser extends DefaultHandler {
 					state = 1;
 				}
 				else if(token.equalsIgnoreCase("L") || token.equalsIgnoreCase("M")) {
+					//TODO: differentiate L and M in SVG
 					state = 1;
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("Z")) {
-					polygon.points.add(polygon.points.get(0)); //what if it has no points?
+					//XXX: do not add last point - it should be done in KMLDump
+					//polygon.add1stPointAgain();
+					//polygon.points.add(polygon.points.get(0)); //what if it has no points?
 					state = 9; //XXX: 0?
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("C")) {
-					log.warn("PATH.D: not processed token ["+token+"]");
+					log.warn("PATH.D: token ["+token+"] processed as L/M");
 					state = 1;
 					lastLetter = token.charAt(0);
 				}
@@ -304,7 +307,8 @@ public class SVGParser extends DefaultHandler {
 			if(state==2) {
 				token = sr.readNumbers();
 				point.y = Float.parseFloat(token);
-				polygon.points.add((Point)point.clone());
+				polygon.addPoint((Point)point.clone());
+				//polygon.points.add((Point)point.clone());
 				setXYMaxMin(point);
 
 				state = 0;
@@ -321,23 +325,26 @@ public class SVGParser extends DefaultHandler {
 			}
 		}
 		
-		setPolygonCentre(polygon);
+		//log.info("poly 1st and last ponits: "+polygon.points.get(0)+"; "+polygon.points.get(polygon.points.size()-1));
+		//setPolygonCentre(polygon);
+		polygon.setPolygonCentre();
 	}
-
+	
+	/*
+	 * state's:
+	 * 
+	 * 0 - wait for letter
+	 * 1 - wait for points (eg: 123,123)
+	 * 2 - end
+	 * 
+	 */
+	/*
 	@Deprecated
 	void oldProcPolygon(Polygon polygon, String pointsStr) {
 		//TODO: add polygon attrs.
 		String[] ps = pointsStr.split("\\s");
 		//Point firstPoint = null;
 		
-		/*
-		 * state's:
-		 * 
-		 * 0 - wait for letter
-		 * 1 - wait for points (eg: 123,123)
-		 * 2 - end
-		 * 
-		 */
 		int state = 0;
 		for(String token: ps) {
 			if(state==0) {
@@ -367,10 +374,11 @@ public class SVGParser extends DefaultHandler {
 			}
 		}
 		
-		setPolygonCentre(polygon);
-	}
+		//setPolygonCentre(polygon);
+		polygon.setPolygonCentre();
+	}*/
 	
-	void setPolygonCentre(Polygon polygon) {
+	/*void setPolygonCentre(Polygon polygon) {
 		float sumX=0, sumY=0;
 		for(Point p: polygon.points) {
 			sumX+=p.x;
@@ -381,7 +389,7 @@ public class SVGParser extends DefaultHandler {
 		polygon.centre = new Point();
 		polygon.centre.x = avgX;
 		polygon.centre.y = avgY;
-	}
+	}*/
 	
 	void setXYMaxMin(Point p) {
 		if(p.x > root.maxX) root.maxX = p.x;

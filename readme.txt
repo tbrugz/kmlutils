@@ -40,7 +40,14 @@ running - classes with main()
 - tbrugz.xml.test.Test
 
 
+specs...
+--------
+http://code.google.com/intl/en/apis/kml/documentation/kml_tut.html
+http://code.google.com/intl/en/apis/kml/documentation/kmlreference.html
+http://www.w3.org/TR/SVG/
+http://www.w3.org/TR/SVG/paths.html
+
+
 changelog?
 ---------
-see: 
-https://bitbucket.org/tbrugz/kmlutils/changesets
+see: https://bitbucket.org/tbrugz/kmlutils/changesets

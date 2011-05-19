@@ -12,4 +12,9 @@ public class Point implements Cloneable {
 			return null;
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "["+x+","+y+"]";
+	}
 }
