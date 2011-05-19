@@ -22,9 +22,12 @@ public class DumpKMLModel extends AbstractDump {
 	
 	@Override
 	public void dumpModel(Element root, PrintStream out) {
-		loadProp(idMappings, "idmappings.properties");
 		loadSnippets("snippets.properties");
 		super.dumpModel(root, out);
+	}
+	
+	public void loadIdMappings(String propFile) {
+		loadProp(idMappings, propFile); //"idmappings.properties");
 	}
 	
 	@Override

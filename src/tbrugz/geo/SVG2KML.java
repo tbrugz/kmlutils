@@ -43,6 +43,8 @@ public class SVG2KML {
 		log.info("writing kml: "+fileOut);
 		
 		DumpKMLModel dm = new DumpKMLModel();
+		dm.loadIdMappings(prop.getProperty("svg2kml.idmappingsprop"));
+		
 		//dm.dumpModel(parser.root, System.out);
 		//dm.dumpModel(root, new PrintStream("work/output/Municipalities_of_RS_out.kml"));
 		dm.dumpModel(root, new PrintStream(fileOut));

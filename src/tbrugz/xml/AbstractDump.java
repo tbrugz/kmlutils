@@ -13,6 +13,14 @@ import org.apache.commons.logging.LogFactory;
 
 import tbrugz.xml.model.skel.Element;
 
+class ReplacerSequence {
+	static int count = 0;
+	
+	public static int getNext() {
+		return count++;
+	} 
+}
+
 public abstract class AbstractDump {
 
 	static String levelStr = "  "; //"\t";
@@ -61,14 +69,17 @@ public abstract class AbstractDump {
 			String replacement = regexutil.procFunc(paramGroup, params);
 			log.debug("param: "+paramGroup+"; replacement: "+replacement);
 			if(replacement!=null) {
-				sb.replace(matcher.start()+xtraOffset, matcher.end()+xtraOffset, replacement);
+				xtraOffset += replace(sb, replacement, matcher, xtraOffset);
+				/*sb.replace(matcher.start()+xtraOffset, matcher.end()+xtraOffset, replacement);
 				int originalSize = matcher.end()-matcher.start();
-				xtraOffset += replacement.length()-originalSize;
+				xtraOffset += replacement.length()-originalSize;*/
 				//matcher.replaceFirst(replacement);
 				//matcher = paramPattern.matcher(s);
 			}
 			else {
-				//TODO: handle null ids
+				//TODOne: handle null ids
+				replacement = "kmlut_"+ReplacerSequence.getNext();
+				xtraOffset += replace(sb, replacement, matcher, xtraOffset);
 			}
 		}
 		
@@ -79,8 +90,13 @@ public abstract class AbstractDump {
 			}
 		}*/
 		
-		//if(s!=null) out(s, nestLevel);
-		if(sb!=null) out(sb.toString(), nestLevel);
+		if(sb!=null) { out(sb.toString(), nestLevel); }
+	}
+	
+	int replace(StringBuilder sb, String replacement, Matcher matcher, int xtraOffset) {
+		sb.replace(matcher.start()+xtraOffset, matcher.end()+xtraOffset, replacement);
+		int originalSize = matcher.end()-matcher.start();
+		return replacement.length()-originalSize; //StringBuffer size diff; to add in xtraOffset
 	}
 	
 	public void out(String s, int nestLevel) {
