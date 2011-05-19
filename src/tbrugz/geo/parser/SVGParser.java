@@ -149,7 +149,7 @@ public class SVGParser extends DefaultHandler {
 		 * http://www.ibm.com/developerworks/xml/library/x-tipsaxp/
 		 * 
 		 */
-        
+
 		try {
 			spf.setFeature(LOAD_EXTERNAL_DTD_FEATURE, false);
 
@@ -275,15 +275,15 @@ public class SVGParser extends DefaultHandler {
 					state = 1;
 				}
 				else if(token.equalsIgnoreCase("L") || token.equalsIgnoreCase("M")) {
-					//TODO: differentiate L and M in SVG
+					//TODO: differentiate L and M in SVG - L should start a new polygon
 					state = 1;
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("Z")) {
-					//XXX: do not add last point - it should be done in KMLDump
+					//XXXxx: do not add last point - it should be done in KMLDump
 					//polygon.add1stPointAgain();
 					//polygon.points.add(polygon.points.get(0)); //what if it has no points?
-					state = 9; //XXX: 0?
+					state = 9; //TODO: state = 0? after Z should be a M or terminate 
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("C")) {
@@ -341,7 +341,6 @@ public class SVGParser extends DefaultHandler {
 	/*
 	@Deprecated
 	void oldProcPolygon(Polygon polygon, String pointsStr) {
-		//TODO: add polygon attrs.
 		String[] ps = pointsStr.split("\\s");
 		//Point firstPoint = null;
 		

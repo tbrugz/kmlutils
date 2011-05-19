@@ -42,6 +42,7 @@ public class DumpKMLModel extends AbstractDump {
 	}
 	
 	public void loadIdMappings(String propFile) {
+		log.info("loading mappings file: "+propFile);
 		loadProp(idMappings, propFile); //"idmappings.properties");
 	}
 	

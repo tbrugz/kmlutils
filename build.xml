@@ -1,5 +1,11 @@
 <project name="kmlutils" default="build">
 
+	<!--
+	for debugging:
+	ant -verbose 
+	http://ant.apache.org/problems.html
+	-->
+	
     <target name="prepare">
     	<mkdir dir="work/output"/>
     </target>
@@ -25,10 +31,12 @@
 		http://googlemapsapi.blogspot.com/2007/06/validate-your-kml-online-or-offline.html
 		http://www.kmlvalidator.com/
 		-->
-		<!--xmlvalidate failonerror="yes" lenient="no" warn="yes">
+		<!-- for DTDs
+		<xmlvalidate failonerror="yes" lenient="no" warn="yes">
 			<fileset dir="work/output" includes="**/*.kml"/>
 			<attribute name="http://xml.org/sax/features/validation" value="true"/>
-		</xmlvalidate-->
+		</xmlvalidate>
+		-->
 		<!--schemavalidate noNamespaceFile="xsd/kml21.xsd">
 			<fileset dir="work/output" includes="**/*.kml"/>
 		</schemavalidate-->
