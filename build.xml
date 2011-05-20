@@ -6,6 +6,12 @@
 	http://ant.apache.org/problems.html
 	-->
 	
+	<path id="default">
+		<pathelement location="lib/commons-logging-1.1.1.jar"/>
+		<pathelement location="lib/log4j-1.2.15.jar"/>
+		<pathelement path="bin/"/>
+	</path>
+	
     <target name="prepare">
     	<mkdir dir="work/output"/>
     </target>
@@ -21,6 +27,10 @@
 	<target name="build" depends="prepare, compile">
 		<mkdir dir="dist"/>
 		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
+	</target>
+	
+	<target name="run">
+		<java classpathref="default" classname="tbrugz.geo.SVG2KML" />
 	</target>
 
 	<target name="kml-validate" depends="prepare">
