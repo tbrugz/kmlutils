@@ -17,4 +17,9 @@ public class Point implements Cloneable {
 	public String toString() {
 		return "["+x+","+y+"]";
 	}
+	
+	public void addPoint(Point p) {
+		x += p.x;
+		y += p.y;
+	}
 }

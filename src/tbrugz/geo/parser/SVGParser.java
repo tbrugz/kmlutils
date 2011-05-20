@@ -258,7 +258,9 @@ public class SVGParser extends DefaultHandler {
 		 */
 		int state = 0;
 		char lastLetter = '0';
+		boolean absoluteRef = true;
 		Point point = new Point();
+		Point previousPoint = null;
 		String token = "";
 		
 		for(;token!=null;) {
@@ -305,6 +307,16 @@ public class SVGParser extends DefaultHandler {
 				else {
 					log.warn("PATH.D: unkown token: ["+token+"] [state0]");
 				}
+				
+				if(!token.equals("") && !token.equals(" ")) {
+					if(isUpperCase(token)) {
+						absoluteRef = true;
+					}
+					else {
+						absoluteRef = false;
+					}
+				}
+				
 			}
 			
 			if(state==1) {
@@ -318,7 +330,15 @@ public class SVGParser extends DefaultHandler {
 			if(state==2) {
 				token = sr.readNumbers();
 				point.y = Float.parseFloat(token);
-				polygon.addPoint((Point)point.clone());
+				Point newPoint = (Point)point.clone();
+				if(!absoluteRef) {
+					if(previousPoint==null) {
+						log.warn("PATH.D: relative point declared with no previous point");
+					}
+					newPoint.addPoint(previousPoint);
+				}
+				polygon.addPoint(newPoint);
+				previousPoint = newPoint;
 				//polygon.points.add((Point)point.clone());
 				setXYMaxMin(point);
 
@@ -339,6 +359,13 @@ public class SVGParser extends DefaultHandler {
 		//log.info("poly 1st and last ponits: "+polygon.points.get(0)+"; "+polygon.points.get(polygon.points.size()-1));
 		//setPolygonCentre(polygon);
 		polygon.setPolygonCentre();
+	}
+	
+	boolean isUpperCase(String s) {
+		if(Character.isUpperCase(s.charAt(0))) {
+			return true;
+		}
+		return false;
 	}
 	
 	/*
