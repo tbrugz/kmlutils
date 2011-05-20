@@ -1,8 +1,6 @@
 package tbrugz.graphml;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import tbrugz.graphml.model.Link;

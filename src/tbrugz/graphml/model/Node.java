@@ -1,8 +1,5 @@
 package tbrugz.graphml.model;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import tbrugz.xml.model.skel.Element;
 
 public class Node implements Element {

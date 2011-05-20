@@ -274,9 +274,20 @@ public class SVGParser extends DefaultHandler {
 					}
 					state = 1;
 				}
-				else if(token.equalsIgnoreCase("L") || token.equalsIgnoreCase("M")) {
-					//TODO: differentiate L and M in SVG - L should start a new polygon
+				else if(token.equalsIgnoreCase("L")) {
 					state = 1;
+					lastLetter = token.charAt(0);
+				}
+				else if(token.equalsIgnoreCase("M")) {
+					//TODO: differentiate L and M in SVG - M should start a new polygon
+					if(lastLetter=='0') {
+						state = 1;
+					}
+					else {
+						//XXX: start a new Polygon
+						state = 9;
+					}
+					
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("Z")) {
@@ -287,7 +298,7 @@ public class SVGParser extends DefaultHandler {
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("C")) {
-					log.warn("PATH.D: token ["+token+"] processed as L/M");
+					log.warn("PATH.D: token ["+token+"] processed as L");
 					state = 1;
 					lastLetter = token.charAt(0);
 				}
