@@ -78,7 +78,7 @@ public abstract class AbstractDump {
 			}
 			else {
 				//TODOne: handle null ids
-				replacement = "kmlut_"+ReplacerSequence.getNext();
+				replacement = "nullid_"+ReplacerSequence.getNext();
 				xtraOffset += replace(sb, replacement, matcher, xtraOffset);
 			}
 		}

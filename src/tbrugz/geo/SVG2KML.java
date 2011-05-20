@@ -3,6 +3,7 @@ package tbrugz.geo;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -37,6 +38,8 @@ public class SVG2KML {
 		float[] inputBounds = {root.maxX, root.minX, root.maxY, root.minY};
 		//float[] outputBounds = {-49.6917f, -57.64777f, -33.7515f, -27.08f,};
 		float[] outputBounds = {outMaxX, outMinX, outMaxY, outMinY,};
+		log.info("coords bounds: input: "+arrayToString(inputBounds)+", output: "+arrayToString(outputBounds));
+		
 		ct.transformCoords(root, inputBounds, outputBounds);
 
 		log.info("coords transformed...");
@@ -54,6 +57,14 @@ public class SVG2KML {
 		dm.dumpModel(root, new PrintStream(fileOut));
 
 		log.info("write done... time elapsed: "+(System.currentTimeMillis()-initTime)+"ms");
+	}
+	
+	static String arrayToString(float[] arr) {
+		StringBuffer sb = new StringBuffer();
+		for(float elem: arr) {
+			sb.append(elem+", ");
+		}
+		return "["+sb.toString()+"]";
 	}
 
 }

@@ -28,6 +28,10 @@ Municipalities_of_RS.svg originated from:
 http://commons.wikimedia.org/wiki/File:Municipalities_of_the_South_Region_of_Brazil.svg
 licensed under: http://creativecommons.org/licenses/by-sa/3.0/deed.en
 
+SantaCatarina_MesoMicroMunicip_municipios.svg originated from:
+http://commons.wikimedia.org/wiki/File:SantaCatarina_MesoMicroMunicip.svg
+licensed under: http://creativecommons.org/licenses/by-sa/3.0/deed.en
+
 KML Schema - urls:
 http://schemas.opengis.net/kml/2.2.0/
 http://code.google.com/intl/pt-BR/apis/kml/schema/kml21.xsd
