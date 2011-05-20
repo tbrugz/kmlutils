@@ -3,6 +3,7 @@ package tbrugz.geo.parser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -127,7 +128,7 @@ public class SVGParser extends DefaultHandler {
 	public static String ANY_ID = "id";
 	
 	Root root = null;
-	Composite lastGroupParsed = null;
+	Stack<Composite> groupStack = new Stack<Composite>();
 	int nestLevel = 0;
 	
 	static Log log = LogFactory.getLog(SVGParser.class);
@@ -183,7 +184,7 @@ public class SVGParser extends DefaultHandler {
 		if(qName.equalsIgnoreCase(SVG)) {
 			if(root==null) {
 				root = new Root();
-				lastGroupParsed = root;
+				groupStack.add(root);
 				root.setId(id);
 
 				log.debug("<svg> processed, l:"+nestLevel);
@@ -192,15 +193,13 @@ public class SVGParser extends DefaultHandler {
 			else {
 				throw new RuntimeException("SVG already declared");
 			}
-			//return;
 		}
 		
 		if(qName.equalsIgnoreCase(G)) {
 			Group g = new Group();
-			lastGroupParsed.getChildren().add(g);
+			groupStack.peek().getChildren().add(g);
+			groupStack.push(g);
 			g.setId(id);
-
-			lastGroupParsed = g;
 
 			log.trace("<g> processed, l:"+nestLevel);
 			nestLevel++;
@@ -208,7 +207,7 @@ public class SVGParser extends DefaultHandler {
 
 		if(qName.equalsIgnoreCase(PATH)) {
 			Polygon p = new Polygon();
-			lastGroupParsed.getChildren().add(p);
+			groupStack.peek().getChildren().add(p);
 			p.setId(id);
 			String pointsStr = attributes.getValue(PATH_D);
 			//TODO: polygonS
@@ -219,15 +218,12 @@ public class SVGParser extends DefaultHandler {
 		}
 	}
 
-	/*public void characters(char[] ch, int start, int length) throws SAXException {
-		tempVal = new String(ch,start,length);
-	}*/
-
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if(qName.equalsIgnoreCase(SVG)) {
 			nestLevel--;
 			log.debug("</svg> processed, l:"+nestLevel);
+			groupStack.pop();
 			
 			//DumpModel dm = new DumpModel();
 			//dm.dumpModel(root);
@@ -236,6 +232,7 @@ public class SVGParser extends DefaultHandler {
 		if(qName.equalsIgnoreCase(G)) {
 			nestLevel--;
 			log.trace("</g> processed, l:"+nestLevel);
+			groupStack.pop();
 		}
 		
 		if(qName.equalsIgnoreCase(PATH)) {
