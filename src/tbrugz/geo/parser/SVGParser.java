@@ -354,7 +354,6 @@ public class SVGParser extends DefaultHandler {
 		}
 		
 		//log.info("poly 1st and last ponits: "+polygon.points.get(0)+"; "+polygon.points.get(polygon.points.size()-1));
-		//setPolygonCentre(polygon);
 		polygon.setPolygonCentre();
 	}
 	
@@ -364,66 +363,6 @@ public class SVGParser extends DefaultHandler {
 		}
 		return false;
 	}
-	
-	/*
-	 * state's:
-	 * 
-	 * 0 - wait for letter
-	 * 1 - wait for points (eg: 123,123)
-	 * 2 - end
-	 * 
-	 */
-	/*
-	@Deprecated
-	void oldProcPolygon(Polygon polygon, String pointsStr) {
-		String[] ps = pointsStr.split("\\s");
-		//Point firstPoint = null;
-		
-		int state = 0;
-		for(String token: ps) {
-			if(state==0) {
-				if(token.equalsIgnoreCase("L") || token.equalsIgnoreCase("M")) {
-					state = 1;
-				}
-				else if(token.equalsIgnoreCase("Z")) {
-					polygon.points.add(polygon.points.get(0)); //what if it has no points?
-					state = 2;
-				}
-				else {
-					log.warn("PATH.D: unkown token: "+token);
-				}
-			}
-			else if(state==1) {
-				String[] pts = token.split(",");
-				Point point = new Point();
-				point.x = Float.parseFloat(pts[0]);
-				point.y = Float.parseFloat(pts[1]);
-				polygon.points.add(point);
-				setXYMaxMin(point);
-
-				state = 0;
-			}
-			else {
-				log.warn("PATH.D: Unespected state: "+state+", token: "+token);
-			}
-		}
-		
-		//setPolygonCentre(polygon);
-		polygon.setPolygonCentre();
-	}*/
-	
-	/*void setPolygonCentre(Polygon polygon) {
-		float sumX=0, sumY=0;
-		for(Point p: polygon.points) {
-			sumX+=p.x;
-			sumY+=p.y;
-		}
-		float avgX = sumX/polygon.points.size();
-		float avgY = sumY/polygon.points.size();
-		polygon.centre = new Point();
-		polygon.centre.x = avgX;
-		polygon.centre.y = avgY;
-	}*/
 	
 	void setXYMaxMin(Point p) {
 		if(p.x > root.maxX) root.maxX = p.x;
