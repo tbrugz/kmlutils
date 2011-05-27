@@ -2,7 +2,7 @@ package tbrugz.graphml.model;
 
 import tbrugz.xml.model.skel.Element;
 
-public class Link implements Element {
+public class Link implements Element, Stereotyped {
 	String name;
 	//Node source;
 	//Node target;
@@ -39,6 +39,11 @@ public class Link implements Element {
 	}
 	public String toString() {
 		return source+"->"+target;
+	}
+	public String getStereotype() {
+		return null;
+	}
+	public void setStereotype(String s) {
 	}
 	
 }

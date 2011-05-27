@@ -22,6 +22,14 @@ public abstract class AbstractSAXParser extends DefaultHandler {
 	//int nestLevel = 0;
 	
 	static Log log = LogFactory.getLog(AbstractSAXParser.class);
+	
+	public static String getPadding(int size) {
+		StringBuffer sb = new StringBuffer();
+		for(int i=0;i<size;i++) {
+			sb.append("  ");
+		}
+		return sb.toString();
+	}
 
 	public Composite parseDocument(String file) {
 		//get a factory

@@ -2,7 +2,7 @@ package tbrugz.graphml.model;
 
 import tbrugz.xml.model.skel.Element;
 
-public class Node implements Element {
+public class Node implements Element, Stereotyped {
 
 	String id;
 	String label;
@@ -34,5 +34,10 @@ public class Node implements Element {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
+
+	public String getStereotype() {
+		return null;
+	}
+
+	public void setStereotype(String s) {}
 }

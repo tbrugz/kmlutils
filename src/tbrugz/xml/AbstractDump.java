@@ -54,6 +54,10 @@ public abstract class AbstractDump {
 	
 	final static Pattern paramPattern = Pattern.compile("(\\{(.)+?})");
 	final static ReplaceUtil regexutil = new ReplaceUtil();
+
+	public boolean hasSnippet(String snippetId) {
+		return null!=snippets.getProperty(snippetId);
+	}
 	
 	public void outSnippet(String snippetId, int nestLevel, String... params) {
 		String s = snippets.getProperty(snippetId);
