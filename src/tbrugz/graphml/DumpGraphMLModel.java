@@ -72,11 +72,25 @@ public class DumpGraphMLModel extends AbstractDump {
 		return s;
 	}
 	
-	public void outNodeContents(Node t, int level) {
+	@Deprecated
+	public void oldOutNodeContents(Node t, int level) {
 		outSnippet(getSnippetId(t, "node"), level, t.getLabel());
 	}
 
 	public void outEdgeContents(Link l, int level) {
 		outSnippet(getSnippetId(l, "edge"), level);
+	}
+
+	public void outNodeContents(Node t, int level) {
+		if(t.getStereotypeParamCount()>0) {
+			String[] args = new String[t.getStereotypeParamCount()];
+			for(int i=0; i<t.getStereotypeParamCount(); i++) {
+				args[i] = t.getStereotypeParam(i);
+			}
+			outSnippet(getSnippetId(t, "node"), level, args);
+		}
+		else {
+			outSnippet(getSnippetId(t, "node"), level, t.getLabel());
+		}
 	}
 }

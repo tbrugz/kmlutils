@@ -18,6 +18,27 @@ public class Point implements Cloneable {
 		return "["+x+","+y+"]";
 	}
 	
+	static float equalityPrecision = 0.1f; //XXX: 0.1f
+	
+	static int rounded(float f) {
+		return Math.round(f*equalityPrecision);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Point) {
+			return rounded( ((Point) obj).x )==rounded(x) && rounded( ((Point) obj).y )==rounded(y); 
+		}
+		return false;
+	}
+	
+	static int reminderDiv = 10000;
+	
+	@Override
+	public int hashCode() {
+		return rounded(x)+rounded(y)%reminderDiv;
+	}
+	
 	public void addPoint(Point p) {
 		x += p.x;
 		y += p.y;

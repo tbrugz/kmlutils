@@ -40,4 +40,12 @@ public class Node implements Element, Stereotyped {
 	}
 
 	public void setStereotype(String s) {}
+
+	public String getStereotypeParam(int i) {
+		return null;
+	}
+
+	public int getStereotypeParamCount() {
+		return 0;
+	}
 }
