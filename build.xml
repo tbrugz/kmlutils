@@ -27,6 +27,7 @@
 	<target name="build" depends="prepare, compile">
 		<mkdir dir="dist"/>
 		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
+		<copy tofile="dist/kmlutils.jar" file="dist/svg2kml.jar"/>
 	</target>
 	
 	<target name="run">

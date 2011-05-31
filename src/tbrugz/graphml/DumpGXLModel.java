@@ -3,7 +3,7 @@ package tbrugz.graphml;
 import java.io.PrintStream;
 import java.util.Properties;
 
-import tbrugz.graphml.model.Link;
+import tbrugz.graphml.model.Edge;
 import tbrugz.graphml.model.Root;
 import tbrugz.graphml.model.Node;
 import tbrugz.xml.AbstractDump;
@@ -38,8 +38,8 @@ public class DumpGXLModel extends AbstractDump {
 		    }
 		    links.addAll(ll);*/
 		}
-		else if(elem instanceof Link) {
-			Link myl = (Link) elem;
+		else if(elem instanceof Edge) {
+			Edge myl = (Edge) elem;
 			out("<edge id=\""+myl.getSource()+"_"+myl.getTarget()+"\" to=\""+myl.getTarget()+"\" from=\""+myl.getSource()+"\">", level+1);
 			out("  <type xlink:href=\"http://www.gupro.de/GXL/examples/schema/gxl/simpleExample/simpleExampleSchema.gxl#Call\" xlink:type=\" simple\"/>", level+1);
 			out("</edge>", level+1);

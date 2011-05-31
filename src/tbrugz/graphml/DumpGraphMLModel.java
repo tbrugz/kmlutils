@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import tbrugz.graphml.model.Link;
+import tbrugz.graphml.model.Edge;
 import tbrugz.graphml.model.Root;
 import tbrugz.graphml.model.Node;
 import tbrugz.graphml.model.Stereotyped;
@@ -42,8 +42,8 @@ public class DumpGraphMLModel extends AbstractDump {
 			out("</node>", level);
 			nodeNames.add(t.getId());
 		}
-		else if(elem instanceof Link) {
-			Link myl = (Link) elem;
+		else if(elem instanceof Edge) {
+			Edge myl = (Edge) elem;
 			out("<edge source=\""+myl.getSource()+"\" target=\""+myl.getTarget()+"\">", level);
 			outEdgeContents(myl, level+1);
 			out("</edge>", level);
@@ -77,7 +77,7 @@ public class DumpGraphMLModel extends AbstractDump {
 		outSnippet(getSnippetId(t, "node"), level, t.getLabel());
 	}
 
-	public void outEdgeContents(Link l, int level) {
+	public void outEdgeContents(Edge l, int level) {
 		outSnippet(getSnippetId(l, "edge"), level);
 	}
 

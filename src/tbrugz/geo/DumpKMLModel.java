@@ -8,10 +8,10 @@ import java.util.TreeSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import tbrugz.geo.model.Group;
-import tbrugz.geo.model.Point;
-import tbrugz.geo.model.Polygon;
-import tbrugz.geo.model.Root;
+import tbrugz.svg.model.Group;
+import tbrugz.svg.model.Point;
+import tbrugz.svg.model.Polygon;
+import tbrugz.svg.model.Root;
 import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;

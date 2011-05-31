@@ -1,4 +1,4 @@
-package tbrugz.geo.model;
+package tbrugz.svg.model;
 
 import java.util.ArrayList;
 import java.util.List;

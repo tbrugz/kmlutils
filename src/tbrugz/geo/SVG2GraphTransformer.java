@@ -10,12 +10,12 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import tbrugz.geo.model.Group;
-import tbrugz.geo.model.Point;
-import tbrugz.geo.model.Polygon;
-import tbrugz.geo.model.Root;
-import tbrugz.graphml.model.Link;
+import tbrugz.graphml.model.Edge;
 import tbrugz.graphml.model.NodeXY;
+import tbrugz.svg.model.Group;
+import tbrugz.svg.model.Point;
+import tbrugz.svg.model.Polygon;
+import tbrugz.svg.model.Root;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;
 
@@ -26,7 +26,7 @@ class SVG2GraphTransformer {
 	Map<Point, List<String>> pointmap = new HashMap<Point, List<String>>();
 	tbrugz.graphml.model.Root graphRoot;
 	List<Element> graphl;
-	Set<Link> linkset = new HashSet<Link>(); 
+	Set<Edge> linkset = new HashSet<Edge>(); 
 	
 	int countNodes = 0;
 	int countEdges = 0;
@@ -56,7 +56,7 @@ class SVG2GraphTransformer {
 	
 	void addEdges(List<String> nodes, Composite root, int startIndex) {
 		for(int i=startIndex;i<nodes.size();i++) {
-			Link l = new Link();
+			Edge l = new Edge();
 			l.setSource(nodes.get(startIndex-1));
 			l.setTarget(nodes.get(i));
 			if(l.getSource().equals(l.getTarget())) {

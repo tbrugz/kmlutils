@@ -8,9 +8,9 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import tbrugz.geo.model.Root;
-import tbrugz.geo.parser.SVGParser;
 import tbrugz.graphml.DumpGraphMLModel;
+import tbrugz.svg.model.Root;
+import tbrugz.svg.parser.SVGParser;
 
 public class SVG2GraphML {
 	static Log log = LogFactory.getLog(SVG2GraphML.class);

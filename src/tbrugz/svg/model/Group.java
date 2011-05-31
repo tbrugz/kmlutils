@@ -1,4 +1,4 @@
-package tbrugz.geo.model;
+package tbrugz.svg.model;
 
 import tbrugz.xml.model.skel.CompositeImpl;
 

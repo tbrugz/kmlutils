@@ -1,4 +1,4 @@
-package tbrugz.geo.model;
+package tbrugz.svg.model;
 
 public class Point implements Cloneable {
 	public float x, y;

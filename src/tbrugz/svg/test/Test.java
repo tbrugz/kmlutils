@@ -1,4 +1,4 @@
-package tbrugz.geo.test;
+package tbrugz.svg.test;
 
 public class Test {
 

@@ -8,8 +8,8 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import tbrugz.geo.model.Root;
-import tbrugz.geo.parser.SVGParser;
+import tbrugz.svg.model.Root;
+import tbrugz.svg.parser.SVGParser;
 
 public class SVG2KML {
 	static Log log = LogFactory.getLog(SVG2KML.class);

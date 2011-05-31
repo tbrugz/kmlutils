@@ -2,7 +2,7 @@ package tbrugz.graphml.model;
 
 import tbrugz.xml.model.skel.Element;
 
-public class Link implements Element, Stereotyped {
+public class Edge implements Element, Stereotyped {
 	String name;
 	//Node source;
 	//Node target;
@@ -43,8 +43,8 @@ public class Link implements Element, Stereotyped {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Link) {
-			Link l2 = (Link) obj;
+		if(obj instanceof Edge) {
+			Edge l2 = (Edge) obj;
 			return this.source.equals(l2.source)&& this.target.equals(l2.target);
 		}
 		return false;
