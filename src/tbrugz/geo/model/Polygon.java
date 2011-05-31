@@ -49,5 +49,5 @@ public class Polygon implements Element {
 		centre.y = avgY;
 	}
 	
-	
+	//TODO: add barycenter - http://en.wikipedia.org/wiki/Center_of_mass
 }

@@ -28,14 +28,12 @@ public class SVG2KML {
 		log.info("parsing svg: "+fileIn);
 
 		SVGParser parser = new SVGParser();
-		//Root root = parser.parseDocument("work/input/Municipalities_of_RS.svg");
 		Root root = parser.parseDocument(fileIn);
 
 		log.info("parsed...");
 		
 		CoordinatesTransformer ct = new CoordinatesTransformer();
 		float[] inputBounds = {root.maxX, root.minX, root.maxY, root.minY};
-		//float[] outputBounds = {-49.6917f, -57.64777f, -33.7515f, -27.08f,};
 		float[] outputBounds = {outMaxX, outMinX, outMaxY, outMinY,};
 		log.info("coords bounds: input: "+arrayToString(inputBounds)+", output: "+arrayToString(outputBounds));
 		
@@ -51,8 +49,6 @@ public class SVG2KML {
 			dm.loadIdMappings(idMappingPropFile);
 		}
 		
-		//dm.dumpModel(parser.root, System.out);
-		//dm.dumpModel(root, new PrintStream("work/output/Municipalities_of_RS_out.kml"));
 		dm.dumpModel(root, new PrintStream(fileOut));
 
 		log.info("write done... time elapsed: "+(System.currentTimeMillis()-initTime)+"ms");
