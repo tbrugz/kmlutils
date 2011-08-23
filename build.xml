@@ -11,18 +11,14 @@
 		<pathelement location="lib/log4j-1.2.15.jar"/>
 		<pathelement path="bin/"/>
 	</path>
-	
-    <target name="prepare">
-    	<mkdir dir="work/output"/>
-    </target>
+
+	<target name="prepare">
+		<mkdir dir="work/output" />
+	</target>
 
 	<target name="compile">
-    	<javac srcdir="src"
-         destdir="bin"
-         classpath="lib/*"
-         debug="on"
-		/>
-    </target>
+		<javac srcdir="src" destdir="bin" classpath="lib/*" debug="on" />
+	</target>
 
 	<target name="build" depends="prepare, compile">
 		<mkdir dir="dist"/>

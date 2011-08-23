@@ -46,7 +46,12 @@ public abstract class AbstractDump {
 			prop.load(new FileInputStream(fileName));
 		}
 		catch(IOException ioe) {
-			log.warn("Error loading file: "+ioe);
+			try {
+				prop.load(AbstractDump.class.getResourceAsStream("/"+fileName));
+			}
+			catch(IOException e) {
+				log.warn("Error loading file: "+ioe);
+			}
 		} 
 	}
 	
