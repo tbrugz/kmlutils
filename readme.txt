@@ -7,6 +7,7 @@ partially converts polygons.
 
 svg2kml howto:
 - build with ant
+- copy svg2kml.properties.template to svg2kml.properties
 - edit svg2kml.properties, set "svgin", "kmlout", "maxX", "minX", "maxY", "minY" properties
 - (optional) edit snippets.properties to set constant parts to be inserted in the KML file
 - (optional) edit idmappings.properties to translate IDs from the SVG file to the KML file
@@ -24,27 +25,37 @@ Dependencies:
 - commons-logging (included)
 - ant (not included - build only)
 
-Municipalities_of_RS.svg originated from:
-http://commons.wikimedia.org/wiki/File:Municipalities_of_the_South_Region_of_Brazil.svg
-licensed under: http://creativecommons.org/licenses/by-sa/3.0/deed.en
 
-SantaCatarina_MesoMicroMunicip_municipios.svg originated from:
-http://commons.wikimedia.org/wiki/File:SantaCatarina_MesoMicroMunicip.svg
-licensed under: http://creativecommons.org/licenses/by-sa/3.0/deed.en
-
-KML Schema - urls:
-http://schemas.opengis.net/kml/2.2.0/
-http://code.google.com/intl/pt-BR/apis/kml/schema/kml21.xsd
-
-
-running - classes with main()
+Running - classes with main()
 -----------------------------
 - tbrugz.geo.SVG2KML (main)
 - tbrugz.geo.test.Test
 - tbrugz.xml.test.Test
 
 
-specs...
+Included media
+--------------
+  
+Municipalities_of_RS.svg originated from:
+http://commons.wikimedia.org/wiki/File:Municipalities_of_the_South_Region_of_Brazil.svg
+licensed under: http://creativecommons.org/licenses/by-sa/3.0/
+
+SantaCatarina_MesoMicroMunicip_municipios.svg originated from:
+http://commons.wikimedia.org/wiki/File:SantaCatarina_MesoMicroMunicip.svg
+licensed under: http://creativecommons.org/licenses/by-sa/3.0/
+
+Brazil_Labelled_Map_v2.svg originated from:
+http://pt.wikipedia.org/wiki/Ficheiro:Brazil_Labelled_Map.svg
+licensed under: http://creativecommons.org/licenses/by-sa/3.0/
+
+
+KML Schema - urls
+-----------------
+http://schemas.opengis.net/kml/2.2.0/
+http://code.google.com/intl/pt-BR/apis/kml/schema/kml21.xsd
+
+
+Specs...
 --------
 http://code.google.com/intl/en/apis/kml/documentation/kml_tut.html
 http://code.google.com/intl/en/apis/kml/documentation/kmlreference.html
@@ -52,6 +63,6 @@ http://www.w3.org/TR/SVG/
 http://www.w3.org/TR/SVG/paths.html
 
 
-changelog?
----------
+Changelog?
+----------
 see: https://bitbucket.org/tbrugz/kmlutils/changesets

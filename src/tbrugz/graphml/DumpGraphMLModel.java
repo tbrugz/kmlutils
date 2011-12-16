@@ -66,8 +66,13 @@ public class DumpGraphMLModel extends AbstractDump {
 	
 	public String getSnippetId(Stereotyped st, String s) {
 		if(st.getStereotype()!=null) {
-			String news = s+"."+st.getStereotype();
-			if(hasSnippet(news)) { return news; }
+			String newS = s+"."+st.getStereotype();
+			while(true) {
+				if(hasSnippet(newS)) { return newS; }
+				int index = newS.lastIndexOf(".");
+				if(index<=0) { break; }
+				newS = newS.substring(0, index);
+			}
 		}
 		return s;
 	}

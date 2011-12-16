@@ -326,7 +326,13 @@ public class SVGParser extends DefaultHandler {
 
 			if(state==2) {
 				token = sr.readNumbers();
-				point.y = Float.parseFloat(token);
+				try {
+					point.y = Float.parseFloat(token);
+				}
+				catch(NullPointerException e) {
+					log.warn("not a float: "+token);
+					e.printStackTrace();
+				}
 				Point newPoint = (Point)point.clone();
 				if(!absoluteRef) {
 					if(previousPoint==null) {

@@ -8,6 +8,7 @@ public class Node implements Element, Stereotyped {
 	String label;
 	boolean initialNode;
 	boolean finalNode;
+	String stereotype;
 	
 	//List<Link> prox = new ArrayList<Link>();
 	
@@ -36,10 +37,12 @@ public class Node implements Element, Stereotyped {
 	}
 
 	public String getStereotype() {
-		return null;
+		return stereotype;
 	}
 
-	public void setStereotype(String s) {}
+	public void setStereotype(String stereotype) {
+		this.stereotype = stereotype;
+	}
 
 	public String getStereotypeParam(int i) {
 		return null;
