@@ -44,13 +44,15 @@ public abstract class AbstractDump {
 	public void loadProp(Properties prop, String fileName) {
 		try {
 			prop.load(new FileInputStream(fileName));
+			log.info("loaded prop file: "+fileName);
 		}
 		catch(IOException ioe) {
 			try {
 				prop.load(AbstractDump.class.getResourceAsStream("/"+fileName));
+				log.info("loaded prop resource: "+fileName);
 			}
 			catch(IOException e) {
-				log.warn("Error loading file: "+ioe);
+				log.warn("error loading file: "+ioe);
 			}
 		} 
 	}

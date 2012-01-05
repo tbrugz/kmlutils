@@ -1,4 +1,4 @@
-<project name="kmlutils" default="build">
+<project name="kmlutils" default="dist">
 
 	<!--
 	for debugging:
@@ -20,7 +20,7 @@
 		<javac srcdir="src" destdir="bin" classpath="lib/*" debug="on" />
 	</target>
 
-	<target name="build" depends="prepare, compile">
+	<target name="dist" depends="prepare, compile">
 		<mkdir dir="dist"/>
 		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
 		<copy tofile="dist/kmlutils.jar" file="dist/svg2kml.jar"/>

@@ -1,5 +1,6 @@
 package tbrugz.graphml;
 
+import java.io.File;
 import java.io.PrintStream;
 import java.util.Set;
 import java.util.TreeSet;
@@ -17,12 +18,15 @@ import tbrugz.xml.model.skel.Element;
 
 public class DumpGraphMLModel extends AbstractDump {
 
-	static Log log = LogFactory.getLog(AbstractDump.class);
+	static Log log = LogFactory.getLog(DumpGraphMLModel.class);
+	
+	static final String DEFAULT_SNIPPETS_FILE = "graphml-snippets.properties";
 
 	Set<String> nodeNames = new TreeSet<String>();
 	
 	{
-		loadSnippets("graphml-snippets.properties");
+		loadSnippets(DEFAULT_SNIPPETS_FILE);
+		log.debug("loading default snippets file: "+new File(DEFAULT_SNIPPETS_FILE).getAbsolutePath());
 	}
 	
 	@Override
