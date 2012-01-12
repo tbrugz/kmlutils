@@ -87,7 +87,7 @@ public class DumpGraphMLModel extends AbstractDump {
 	}
 
 	public void outEdgeContents(Edge l, int level) {
-		outSnippet(getSnippetId(l, "edge"), level);
+		outSnippet(getSnippetId(l, "edge"), level, l.getName());
 	}
 
 	public void outNodeContents(Node t, int level) {

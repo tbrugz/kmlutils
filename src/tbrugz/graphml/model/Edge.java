@@ -8,6 +8,7 @@ public class Edge implements Element, Stereotyped {
 	//Node target;
 	String target;
 	String source;
+	String stereotype;
 
 	public String getName() {
 		return name;
@@ -51,9 +52,10 @@ public class Edge implements Element, Stereotyped {
 	}
 	
 	public String getStereotype() {
-		return null;
+		return stereotype;
 	}
 	public void setStereotype(String s) {
+		this.stereotype = s;
 	}
 	public String getStereotypeParam(int i) {
 		return null;
