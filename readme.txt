@@ -2,8 +2,13 @@
 kmlutils - utils for KML files
 ------------------------------
 
-The main purpose of this project is a tool for converting SVG files into KML files. Currently it (svg2kml)
-partially converts polygons.
+The purpose of this project is to provide functions for XML-based "visual" file formats. 
+Main Focus is KML, SVG and GraphML file formats.
+
+The main functionality of this project is a tool for converting SVG files into KML files. Currently it (svg2kml)
+partially converts polygons (tbrugz.geo.SVG2KML)
+
+This project also provides a conversion tool for SVG to GraphML (tbrugz.geo.SVG2GraphML)
 
 svg2kml howto:
 - build with ant
@@ -12,6 +17,10 @@ svg2kml howto:
 - (optional) edit snippets.properties to set constant parts to be inserted in the KML file
 - (optional) edit idmappings.properties to translate IDs from the SVG file to the KML file
 - run "java -cp dist/svg2kml.jar;lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar tbrugz/geo/SVG2KML"
+
+svg2graphml howto:
+- similar to svg2kml ;) but you have to edit svg2graphml.properties
+- run "java -cp dist/svg2kml.jar;lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar tbrugz/geo/SVG2GraphML"
 
 Author:
 Telmo Brugnara <tbrugz@gmail.com>
@@ -29,6 +38,7 @@ Dependencies:
 Running - classes with main()
 -----------------------------
 - tbrugz.geo.SVG2KML (main)
+- tbrugz.geo.SVG2GraphML
 - tbrugz.geo.test.Test
 - tbrugz.xml.test.Test
 

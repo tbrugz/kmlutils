@@ -26,8 +26,15 @@
 		<copy tofile="dist/kmlutils.jar" file="dist/svg2kml.jar"/>
 	</target>
 	
-	<target name="run">
+	<target name="run-svg2kml">
 		<java classpathref="default" classname="tbrugz.geo.SVG2KML" />
+	</target>
+
+	<target name="run-svg2graphml">
+		<java classpathref="default" classname="tbrugz.geo.SVG2GraphML" />
+	</target>
+	
+	<target name="run-all" depends="run-svg2kml, run-svg2graphml">
 	</target>
 
 	<target name="kml-validate" depends="prepare">

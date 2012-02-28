@@ -107,8 +107,8 @@ class SVGPathStringReader {
 		if(firstNumber==-1) return null;
 		
 		int i = indexOf(sb, LETTERS_OR_DELIMITER, firstNumber);
-		if(i==-1) return null;
-		if(i==0) return "";
+		if(i==-1) { i=sb.length(); }
+		if(i==0) { return ""; }
 
 		//log.trace("readN: "+pos+"; "+i);
 		String substr = sb.substring(firstNumber, i);
@@ -298,6 +298,8 @@ public class SVGParser extends DefaultHandler {
 				}
 				else if(token.equalsIgnoreCase("C")) {
 					log.warn("PATH.D: token ["+token+"] processed as L");
+					for(int i=0;i<4;i++) { token = sr.readNumbers(); } //ignore next 4 numbers
+					
 					state = 1;
 					lastLetter = token.charAt(0);
 				}
