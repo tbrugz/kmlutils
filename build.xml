@@ -6,21 +6,26 @@
 	http://ant.apache.org/problems.html
 	-->
 	
-	<path id="default">
+	<path id="compile">
 		<pathelement location="lib/commons-logging-1.1.1.jar"/>
 		<pathelement location="lib/log4j-1.2.15.jar"/>
+	</path>
+
+	<path id="default">
+		<path refid="compile"/>
 		<pathelement path="bin/"/>
 	</path>
 
 	<target name="prepare">
+		<mkdir dir="bin" />
 		<mkdir dir="work/output" />
 	</target>
 
-	<target name="compile">
-		<javac srcdir="src" destdir="bin" classpath="lib/*" debug="on" />
+	<target name="compile" depends="prepare">
+		<javac srcdir="src" destdir="bin" classpathref="default" />
 	</target>
 
-	<target name="dist" depends="prepare, compile">
+	<target name="dist" depends="compile">
 		<mkdir dir="dist"/>
 		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
 		<copy tofile="dist/kmlutils.jar" file="dist/svg2kml.jar"/>
