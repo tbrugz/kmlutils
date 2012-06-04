@@ -6,21 +6,21 @@ public class NodeXYWH extends NodeXY {
 		setStereotype("xynode.whnode");
 	}
 	
-	float width, height;
+	Float width, height;
 
-	public float getWidth() {
+	public Float getWidth() {
 		return width;
 	}
 
-	public void setWidth(float width) {
+	public void setWidth(Float width) {
 		this.width = width;
 	}
 
-	public float getHeight() {
+	public Float getHeight() {
 		return height;
 	}
 
-	public void setHeight(float height) {
+	public void setHeight(Float height) {
 		this.height = height;
 	}
 
@@ -28,9 +28,9 @@ public class NodeXYWH extends NodeXY {
 	public String getStereotypeParam(int i) {
 		switch (i) {
 			case 3:
-				return String.valueOf(width);
+				return width==null?null:String.valueOf(width);
 			case 4:
-				return String.valueOf(height);
+				return height==null?null:String.valueOf(height);
 		}
 		return super.getStereotypeParam(i);
 	}

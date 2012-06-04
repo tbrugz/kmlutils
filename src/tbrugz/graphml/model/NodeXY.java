@@ -6,21 +6,21 @@ public class NodeXY extends Node implements Stereotyped {
 		setStereotype("xynode");
 	}
 	
-	float x,y;
+	Float x,y;
 	
-	public float getX() {
+	public Float getX() {
 		return x;
 	}
 
-	public void setX(float x) {
+	public void setX(Float x) {
 		this.x = x;
 	}
 
-	public float getY() {
+	public Float getY() {
 		return y;
 	}
 
-	public void setY(float y) {
+	public void setY(Float y) {
 		this.y = y;
 	}
 
@@ -30,9 +30,9 @@ public class NodeXY extends Node implements Stereotyped {
 			case 0:
 				return getLabel();
 			case 1:
-				return String.valueOf(x);
+				return x==null?null:String.valueOf(x);
 			case 2:
-				return String.valueOf(y);
+				return y==null?null:String.valueOf(y);
 		}
 		return null;
 	}

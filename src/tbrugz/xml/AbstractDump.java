@@ -79,19 +79,25 @@ public abstract class AbstractDump {
 			String paramGroup = matcher.group(1);
 			String replacement = regexutil.procFunc(paramGroup, params);
 			log.debug("param: "+paramGroup+"; replacement: "+replacement);
-			if(replacement!=null) {
-				xtraOffset += replace(sb, replacement, matcher, xtraOffset);
+			
+			String tmpSnippetId = snippetId;
+			while(replacement==null) {
+				replacement = snippets.getProperty("defaults."+tmpSnippetId+"."+paramGroup);
+				log.debug("replacement NULL: "+snippetId+"/"+tmpSnippetId+"/"+paramGroup+"; new replacement: "+replacement);
+				
+				int index = tmpSnippetId.lastIndexOf(".");
+				if(index<=0) { break; }
+				tmpSnippetId = tmpSnippetId.substring(0, index);
+				
+				//replacement = "nullid_"+ReplacerSequence.getNext();
 				/*sb.replace(matcher.start()+xtraOffset, matcher.end()+xtraOffset, replacement);
 				int originalSize = matcher.end()-matcher.start();
 				xtraOffset += replacement.length()-originalSize;*/
 				//matcher.replaceFirst(replacement);
 				//matcher = paramPattern.matcher(s);
 			}
-			else {
-				//TODOne: handle null ids
-				replacement = "nullid_"+ReplacerSequence.getNext();
-				xtraOffset += replace(sb, replacement, matcher, xtraOffset);
-			}
+			if(replacement==null) { replacement = "nullid_"+ReplacerSequence.getNext(); }
+			xtraOffset += replace(sb, replacement, matcher, xtraOffset);
 		}
 		
 		/*if(params!=null) {
