@@ -3,6 +3,7 @@ package tbrugz.xml;
 import java.io.FileInputStream;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -48,8 +49,11 @@ public abstract class AbstractDump {
 		}
 		catch(IOException ioe) {
 			try {
-				prop.load(AbstractDump.class.getResourceAsStream("/"+fileName));
-				log.info("loaded prop resource: "+fileName);
+				String resource = "/"+fileName;
+				InputStream is = AbstractDump.class.getResourceAsStream(resource);
+				if(is==null) { log.warn("resource not found: "+resource); return; }
+				prop.load(is);
+				log.info("loaded prop resource: "+resource);
 			}
 			catch(IOException e) {
 				log.warn("error loading file: "+ioe);
