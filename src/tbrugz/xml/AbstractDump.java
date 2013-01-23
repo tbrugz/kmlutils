@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import tbrugz.util.FileReaderProperties;
 import tbrugz.xml.model.skel.Element;
 
 class ReplacerSequence {
@@ -28,7 +29,7 @@ public abstract class AbstractDump {
 	
 	static Log log = LogFactory.getLog(AbstractDump.class);
 
-	protected Properties snippets = new Properties();
+	protected Properties snippets = new FileReaderProperties();
 	
 	PrintStream output = null;
 	
