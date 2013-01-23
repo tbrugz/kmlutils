@@ -64,7 +64,12 @@ public class DumpGraphMLModel extends AbstractDump {
 
 		//end of processing
 		if(elem instanceof Root) {
-			out("</graph></graphml>", level);
+			if(hasSnippet("footer")) {
+				outSnippet("footer", level);
+			}
+			else {
+				out("</graph></graphml>", level);
+			}
 		}
 	}
 	
@@ -94,12 +99,17 @@ public class DumpGraphMLModel extends AbstractDump {
 		if(t.getStereotypeParamCount()>0) {
 			String[] args = new String[t.getStereotypeParamCount()];
 			for(int i=0; i<t.getStereotypeParamCount(); i++) {
-				args[i] = t.getStereotypeParam(i);
+				args[i] = escape(t.getStereotypeParam(i));
 			}
 			outSnippet(getSnippetId(t, "node"), level, args);
 		}
 		else {
 			outSnippet(getSnippetId(t, "node"), level, t.getLabel());
 		}
+	}
+	
+	static String escape(String s) {
+		if(s==null) return null;
+		return s.replaceAll("&", "&amp;");
 	}
 }
