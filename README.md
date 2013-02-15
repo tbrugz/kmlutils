@@ -10,6 +10,14 @@ partially converts polygons (tbrugz.geo.SVG2KML)
 
 This project also provides a conversion tool for SVG to GraphML (tbrugz.geo.SVG2GraphML)
 
+The project's [wiki](https://bitbucket.org/tbrugz/kmlutils/wiki) also have some useful information.
+
+Author:
+Telmo Brugnara <[tbrugz@gmail.com](mailto:tbrugz@gmail.com)>
+
+License:
+[GNU Lesser General Public License](http://www.gnu.org/licenses/lgpl.html)
+
 
 svg2kml howto
 -------------
@@ -25,13 +33,6 @@ svg2graphml howto
 -----------------
 - similar to svg2kml ;) but you have to edit `svg2graphml.properties`
 - run `java -cp dist/svg2kml.jar;lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar tbrugz/geo/SVG2GraphML`
-
-
-Author:
-Telmo Brugnara <[tbrugz@gmail.com](mailto:tbrugz@gmail.com)>
-
-License:
-[GNU Lesser General Public License](http://www.gnu.org/licenses/lgpl.html)
 
 
 Dependencies
