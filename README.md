@@ -10,17 +10,22 @@ partially converts polygons (tbrugz.geo.SVG2KML)
 
 This project also provides a conversion tool for SVG to GraphML (tbrugz.geo.SVG2GraphML)
 
-svg2kml howto:
+
+svg2kml howto
+-------------
 - build with ant
 - copy `svg2kml.properties.template` to `svg2kml.properties`
 - edit `svg2kml.properties`, set "svgin", "kmlout", "maxX", "minX", "maxY", "minY" properties
 - (optional) edit `snippets.properties` to set constant parts to be inserted in the KML file
 - (optional) edit `idmappings.properties` to translate IDs from the SVG file to the KML file
-- run "java -cp dist/svg2kml.jar;lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar tbrugz/geo/SVG2KML"
+- run `java -cp dist/svg2kml.jar;lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar tbrugz/geo/SVG2KML`
 
-svg2graphml howto:
+
+svg2graphml howto
+-----------------
 - similar to svg2kml ;) but you have to edit `svg2graphml.properties`
-- run "java -cp dist/svg2kml.jar;lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar tbrugz/geo/SVG2GraphML"
+- run `java -cp dist/svg2kml.jar;lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar tbrugz/geo/SVG2GraphML`
+
 
 Author:
 Telmo Brugnara <[tbrugz@gmail.com](mailto:tbrugz@gmail.com)>
@@ -28,7 +33,9 @@ Telmo Brugnara <[tbrugz@gmail.com](mailto:tbrugz@gmail.com)>
 License:
 [GNU Lesser General Public License](http://www.gnu.org/licenses/lgpl.html)
 
-Dependencies:
+
+Dependencies
+------------
 - jdk 1.5
 - log4j (included)
 - commons-logging (included)
