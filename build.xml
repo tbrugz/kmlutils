@@ -1,10 +1,13 @@
-<project name="kmlutils" default="dist">
+<project name="kmlutils" default="dist" xmlns:ivy="antlib:org.apache.ivy.ant">
 
 	<!--
 	for debugging:
 	ant -verbose 
 	http://ant.apache.org/problems.html
 	-->
+	
+	<property file="build.properties"/>
+	<property file="ivysettings.properties"/>
 	
 	<path id="compile">
 		<pathelement location="lib/commons-logging-1.1.1.jar"/>
@@ -71,5 +74,23 @@
 			<fileset dir="work/output" includes="**/*.kml" />
 		</schemavalidate>
 	</target>
+
+	<target name="config-ivy" if="ivy.settings.dir">
+		<ivy:settings file="${ivy.settings.dir}/ivysettings.xml"/>
+	</target>	
 	
+	<target name="resolve-ivy" depends="config-ivy" description="retrieve dependencies with ivy">
+		<ivy:retrieve />
+	</target>	
+
+	<target name="publish" depends="dist,config-ivy" description="publish this project in the ivy repository">
+		<property name="revision" value="${version}"/>
+		<ivy:info/>
+		<echo message="ivy.settings.dir: ${ivy.settings.dir}"/>
+		<ivy:publish resolver="local" pubrevision="${revision}" status="release" update="true" overwrite="true">
+			<artifacts pattern="dist/[module].[ext]" />
+		</ivy:publish>
+		<echo message="project ${ant.project.name} released with version ${revision}"/>
+	</target>
+
 </project>

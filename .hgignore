@@ -1,5 +1,6 @@
 glob:bin/*
-glob:work/output/*
+glob:lib/*
 glob:dist/*
+glob:work/output/*
 glob:work/input/tmp/*
 glob:work/tmp/*
