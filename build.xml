@@ -83,12 +83,19 @@
 		<ivy:retrieve />
 	</target>	
 
+	<!-- see http://theholyjava.wordpress.com/2011/01/26/using-ivy-with-pom-xml/ -->
 	<target name="publish" depends="dist,config-ivy" description="publish this project in the ivy repository">
 		<property name="revision" value="${version}"/>
 		<ivy:info/>
-		<echo message="ivy.settings.dir: ${ivy.settings.dir}"/>
+		<property name="ivy.pom.version" value="${version}"/>
+		<!--ivy:makepom ivyfile="ivy.xml" pomfile="dist/kmlutils-${version}.pom"/-->
+		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/kmlutils.pom"/>
+		<echo message="ivy.settings.dir: ${ivy.settings.dir} ; ivy.module: ${ivy.module}"/>
 		<ivy:publish resolver="local" pubrevision="${revision}" status="release" update="true" overwrite="true">
 			<artifacts pattern="dist/[module].[ext]" />
+			<!--artifacts pattern="dist/[artifact].[type]" /-->
+			<!--artifact name="kmlutils" ext="pom" type="pom" /-->
+			<artifact name="${ivy.module}" ext="pom" type="pom" />
 		</ivy:publish>
 		<echo message="project ${ant.project.name} released with version ${revision}"/>
 	</target>
