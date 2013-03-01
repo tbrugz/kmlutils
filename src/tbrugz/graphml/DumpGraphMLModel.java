@@ -1,7 +1,6 @@
 package tbrugz.graphml;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -30,11 +29,10 @@ public class DumpGraphMLModel extends AbstractDump {
 	}
 	
 	@Override
-	public void dumpModel(Element root, PrintStream out) {
-		super.dumpModel(root, out);
+	public void dumpModel(Element root) {
+		dumpModel(root, 0);
 	}
-
-	@Override
+	
 	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
 			outSnippet("graphml", level);

@@ -36,7 +36,7 @@ public abstract class AbstractDump {
 	public void dumpModel(Element root, PrintStream out) {
 		this.output = out;
 		//loadProp(snippets, "snippets.properties");
-		dumpModel(root, 0);
+		dumpModel(root);
 	}
 	
 	public void loadSnippets(String file) {
@@ -62,7 +62,9 @@ public abstract class AbstractDump {
 		} 
 	}
 	
-	public abstract void dumpModel(Element elem, int level);
+	public abstract void dumpModel(Element root);
+	
+	//public abstract void dumpModel(Element elem, int level);
 	
 	final static Pattern paramPattern = Pattern.compile("(\\{(.)+?})");
 	final static ReplaceUtil regexutil = new ReplaceUtil();

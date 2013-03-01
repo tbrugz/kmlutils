@@ -47,6 +47,10 @@ public class DumpKMLModel extends AbstractDump {
 	}
 	
 	@Override
+	public void dumpModel(Element root) {
+		dumpModel(root, 0);
+	}
+	
 	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
 			outSnippet("Document", level, uniqueIds.getUnique( normalizeId( getId(elem.getId()) ) ), getName(elem.getId()) );

@@ -23,6 +23,10 @@ public class DumpGXLModel extends AbstractDump {
 	}
 
 	@Override
+	public void dumpModel(Element root) {
+		dumpModel(root, 0);
+	}
+	
 	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
 			outSnippet("gxl", level);

@@ -9,7 +9,7 @@ import tbrugz.xml.model.skel.Element;
 class DumpTest extends AbstractDump {
 
 	@Override
-	public void dumpModel(Element elem, int level) {
+	public void dumpModel(Element elem) {
 	}
 	
 	Properties getSnippets() {

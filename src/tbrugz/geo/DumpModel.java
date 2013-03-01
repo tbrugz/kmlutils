@@ -8,9 +8,14 @@ import tbrugz.xml.AbstractDump;
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.Element;
 
+//TODO: rename to DumpSVGModel? is this a SVGDumper?
 public class DumpModel extends AbstractDump {
 	
 	@Override
+	public void dumpModel(Element root) {
+		dumpModel(root, 0);
+	}
+	
 	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
 			out("<root id='"+elem.getId()+"'>", level);
