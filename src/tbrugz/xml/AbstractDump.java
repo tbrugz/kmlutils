@@ -59,8 +59,8 @@ public abstract class AbstractDump {
 				if(is==null) { log.warn("resource not found: "+resource); return; }
 				ptemp.load(is);
 				prop.putAll(ptemp);
-				//log.info("loaded prop resource: "+resource);
-				log.info("loaded prop resource: "+resource, new Throwable());
+				log.info("loaded prop resource: "+resource);
+				//log.info("loaded prop resource: "+resource, new Throwable());
 			}
 			catch(IOException e) {
 				log.warn("error loading file: "+ioe);
