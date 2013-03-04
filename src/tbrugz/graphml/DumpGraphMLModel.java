@@ -23,13 +23,14 @@ public class DumpGraphMLModel extends AbstractDump {
 
 	Set<String> nodeNames = new TreeSet<String>();
 	
-	{
+	void loadDefaultSnipets() {
 		loadSnippets(DEFAULT_SNIPPETS_FILE);
-		log.debug("loading default snippets file: "+new File(DEFAULT_SNIPPETS_FILE).getAbsolutePath());
+		log.info("loaded default snippets file: "+new File(DEFAULT_SNIPPETS_FILE).getAbsolutePath());
 	}
 	
 	@Override
 	public void dumpModel(Element root) {
+		if(snippets.size()==0) { loadDefaultSnipets(); }
 		dumpModel(root, 0);
 	}
 	
@@ -62,8 +63,8 @@ public class DumpGraphMLModel extends AbstractDump {
 
 		//end of processing
 		if(elem instanceof Root) {
-			if(hasSnippet("footer")) {
-				outSnippet("footer", level);
+			if(hasSnippet("graphml.footer")) {
+				outSnippet("graphml.footer", level);
 			}
 			else {
 				out("</graph></graphml>", level);
@@ -82,11 +83,6 @@ public class DumpGraphMLModel extends AbstractDump {
 			}
 		}
 		return s;
-	}
-	
-	@Deprecated
-	public void oldOutNodeContents(Node t, int level) {
-		outSnippet(getSnippetId(t, "node"), level, t.getLabel());
 	}
 
 	public void outEdgeContents(Edge l, int level) {

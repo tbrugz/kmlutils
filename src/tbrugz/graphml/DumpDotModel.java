@@ -14,6 +14,8 @@ import tbrugz.xml.model.skel.Element;
  * see:
  * http://en.wikipedia.org/wiki/DOT_language
  * http://en.wikipedia.org/wiki/Graphviz
+ * 
+ * TODO: dump first nodes then labels
  */
 public class DumpDotModel extends AbstractDump {
 

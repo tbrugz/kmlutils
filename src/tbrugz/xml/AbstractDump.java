@@ -2,6 +2,7 @@ package tbrugz.xml;
 
 import java.io.FileInputStream;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -25,11 +26,11 @@ class ReplacerSequence {
 
 public abstract class AbstractDump {
 
-	static String levelStr = "  "; //"\t";
+	static final String levelStr = "  "; //"\t";
 	
-	static Log log = LogFactory.getLog(AbstractDump.class);
+	static final Log log = LogFactory.getLog(AbstractDump.class);
 
-	protected Properties snippets = new FileReaderProperties();
+	protected final Properties snippets = new FileReaderProperties();
 	
 	PrintStream output = null;
 	
@@ -44,25 +45,32 @@ public abstract class AbstractDump {
 	}
 	
 	public void loadProp(Properties prop, String fileName) {
+		Properties ptemp = new Properties();
 		try {
-			prop.load(new FileInputStream(fileName));
-			log.info("loaded prop file: "+fileName);
+			File f = new File(fileName);
+			ptemp.load(new FileInputStream(f));
+			prop.putAll(ptemp);
+			log.info("loaded prop file: "+f.getAbsolutePath());
 		}
 		catch(IOException ioe) {
 			try {
 				String resource = "/"+fileName;
 				InputStream is = AbstractDump.class.getResourceAsStream(resource);
 				if(is==null) { log.warn("resource not found: "+resource); return; }
-				prop.load(is);
-				log.info("loaded prop resource: "+resource);
+				ptemp.load(is);
+				prop.putAll(ptemp);
+				//log.info("loaded prop resource: "+resource);
+				log.info("loaded prop resource: "+resource, new Throwable());
 			}
 			catch(IOException e) {
 				log.warn("error loading file: "+ioe);
 			}
-		} 
+		}
 	}
 	
 	public abstract void dumpModel(Element root);
+	
+	//XXX add: public abstract String getDefaultFileFormat();
 	
 	//public abstract void dumpModel(Element elem, int level);
 	
