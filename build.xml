@@ -18,6 +18,11 @@
 		<path refid="compile"/>
 		<pathelement path="bin/"/>
 	</path>
+	
+	<target name="clean">
+		<delete dir="bin"/>
+		<delete dir="dist"/>
+	</target>
 
 	<target name="prepare">
 		<mkdir dir="bin" />
@@ -32,6 +37,7 @@
 		<mkdir dir="dist"/>
 		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
 		<copy tofile="dist/kmlutils.jar" file="dist/svg2kml.jar"/>
+		<copy tofile="dist/kmlutils-${version}.jar" file="dist/kmlutils.jar"/>
 	</target>
 	
 	<target name="run-svg2kml">
