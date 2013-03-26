@@ -2,10 +2,10 @@
 		xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
 	<info organisation="org.bitbucket.tbrugz" module="kmlutils"/>
 	<configurations>
-		<conf name="main"/>
+		<conf name="default"/>
 	</configurations>
 	<publications>
-		<artifact name="kmlutils" type="jar"/>
+		<artifact name="kmlutils" type="jar" conf="default"/>
 	</publications>
 	<dependencies>
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.1"/>

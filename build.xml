@@ -30,13 +30,18 @@
 	</target>
 
 	<target name="compile" depends="prepare">
-		<javac srcdir="src" destdir="bin" classpathref="default" />
+		<javac srcdir="src" destdir="bin" classpathref="default" debug="on" source="1.6" target="1.6"/>
 	</target>
 
 	<target name="dist" depends="compile">
 		<mkdir dir="dist"/>
-		<jar destfile="dist/svg2kml.jar" basedir="bin"/>
-		<copy tofile="dist/kmlutils.jar" file="dist/svg2kml.jar"/>
+		<jar destfile="dist/kmlutils.jar" basedir="bin">
+			<manifest>
+				<attribute name="Implementation-Title" value="${ant.project.name}"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+			</manifest>
+		</jar>
+		<copy tofile="dist/svg2kml.jar" file="dist/kmlutils.jar"/>
 		<copy tofile="dist/kmlutils-${version}.jar" file="dist/kmlutils.jar"/>
 	</target>
 	
@@ -93,7 +98,7 @@
 
 	<target name="config-ivy" depends="config-ivy-file,config-ivy-dir"/>
 	
-	<target name="resolve-ivy" depends="config-ivy" description="retrieve dependencies with ivy">
+	<target name="resolve" depends="config-ivy" description="retrieve dependencies with ivy">
 		<ivy:retrieve />
 	</target>
 
