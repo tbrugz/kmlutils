@@ -117,4 +117,6 @@
 		<echo message="project ${ant.project.name} released with version ${revision} to ${resolver.publish}"/>
 	</target>
 
+	<target name="all" depends="clean,publish" description="clean, build and publish project"/>
+	
 </project>
