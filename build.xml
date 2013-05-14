@@ -108,7 +108,9 @@
 		<property name="resolver.publish" value="local"/>
 		<ivy:info/>
 		<property name="ivy.pom.version" value="${revision}"/>
-		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/${ivy.module}.pom"/>
+		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/${ivy.module}.pom">
+			<mapping conf="default" scope="compile"/>
+		</ivy:makepom>
 		<echo message="ivy.settings.dir: ${ivy.settings.dir} ; ivy.module: ${ivy.module}"/>
 		<ivy:publish resolver="${resolver.publish}" pubrevision="${revision}" status="release" update="true" overwrite="true">
 			<artifacts pattern="dist/[module].[ext]" />
