@@ -338,7 +338,9 @@ public class SVGParser extends DefaultHandler {
 				Point newPoint = (Point)point.clone();
 				if(!absoluteRef) {
 					if(previousPoint==null) {
-						log.warn("PATH.D: relative point declared with no previous point");
+						previousPoint = new Point();
+						previousPoint.x = 0; previousPoint.y = 0;
+						log.warn("PATH.D: relative point declared with no previous point [assuming "+previousPoint+"]");
 					}
 					newPoint.addPoint(previousPoint);
 				}
