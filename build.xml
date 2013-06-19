@@ -121,6 +121,7 @@
 		<property name="resolver.publish" value="local"/>
 		<ivy:info/>
 		<property name="ivy.pom.version" value="${revision}"/>
+		<ivy:deliver conf="*(public)" deliverpattern="dist/[type]s/${ivy.module}.ivy.xml" status="release" validate="true" pubrevision="${revision}"/>
 		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/poms/${ivy.module}.pom">
 			<mapping conf="default" scope="compile"/>
 		</ivy:makepom>
@@ -129,6 +130,7 @@
 			artifactsPattern="dist/[type]s/[artifact].[ext]">
 			<artifact name="${ivy.module}" ext="pom" type="pom" />
 			<artifact name="${ivy.module}" ext="jar" type="source" classifier="sources"/>
+			<artifact name="${ivy.module}" ext="ivy.xml" type="ivy" />
 		</ivy:publish>
 		<echo message="project ${ant.project.name} released with version ${revision} to ${resolver.publish}"/>
 	</target>
