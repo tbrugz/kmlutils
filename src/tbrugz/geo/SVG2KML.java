@@ -1,5 +1,6 @@
 package tbrugz.geo;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -40,7 +41,7 @@ public class SVG2KML {
 		ct.transformCoords(root, inputBounds, outputBounds);
 
 		log.info("coords transformed...");
-		log.info("writing kml: "+fileOut);
+		log.info("writing kml: "+new File(fileOut).getAbsolutePath());
 		
 		DumpKMLModel dm = new DumpKMLModel();
 		
