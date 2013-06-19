@@ -56,15 +56,15 @@ Included media
   
 Municipalities_of_RS.svg originated from:
 http://commons.wikimedia.org/wiki/File:Municipalities_of_the_South_Region_of_Brazil.svg
-licensed under: http://creativecommons.org/licenses/by-sa/3.0/
+licensed under: [CC-BY-SA](http://creativecommons.org/licenses/by-sa/3.0/)
 
 SantaCatarina_MesoMicroMunicip_municipios.svg originated from:
 http://commons.wikimedia.org/wiki/File:SantaCatarina_MesoMicroMunicip.svg
-licensed under: http://creativecommons.org/licenses/by-sa/3.0/
+licensed under: [CC-BY-SA](http://creativecommons.org/licenses/by-sa/3.0/)
 
 Brazil_Labelled_Map_v2.svg originated from:
 http://pt.wikipedia.org/wiki/Ficheiro:Brazil_Labelled_Map.svg
-licensed under: http://creativecommons.org/licenses/by-sa/3.0/
+licensed under: [CC-BY-SA](http://creativecommons.org/licenses/by-sa/3.0/)
 
 
 KML Schema - urls

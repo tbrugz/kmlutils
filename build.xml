@@ -38,17 +38,24 @@
 			</fileset>
 		</copy>
 	</target>
+	
+	<target name="jar-source" depends="prepare" description="builds sources jar">
+		<jar destfile="dist/sources/kmlutils.jar"
+			basedir="src">
+			<include name="**"/>
+		</jar>
+	</target>
 
-	<target name="dist" depends="compile">
+	<target name="dist" depends="compile, jar-source">
 		<mkdir dir="dist"/>
-		<jar destfile="dist/kmlutils.jar" basedir="bin">
+		<jar destfile="dist/jars/kmlutils.jar" basedir="bin">
 			<manifest>
 				<attribute name="Implementation-Title" value="${ant.project.name}"/>
 				<attribute name="Implementation-Version" value="${version}"/>
 			</manifest>
 		</jar>
-		<copy tofile="dist/svg2kml.jar" file="dist/kmlutils.jar"/>
-		<copy tofile="dist/kmlutils-${version}.jar" file="dist/kmlutils.jar"/>
+		<copy tofile="dist/jars/svg2kml.jar" file="dist/jars/kmlutils.jar"/>
+		<!--copy tofile="dist/jars/kmlutils-${version}.jar" file="dist/jars/kmlutils.jar"/-->
 	</target>
 	
 	<target name="run-svg2kml">
@@ -114,13 +121,14 @@
 		<property name="resolver.publish" value="local"/>
 		<ivy:info/>
 		<property name="ivy.pom.version" value="${revision}"/>
-		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/${ivy.module}.pom">
+		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/poms/${ivy.module}.pom">
 			<mapping conf="default" scope="compile"/>
 		</ivy:makepom>
 		<echo message="ivy.settings.dir: ${ivy.settings.dir} ; ivy.module: ${ivy.module}"/>
-		<ivy:publish resolver="${resolver.publish}" pubrevision="${revision}" status="release" update="true" overwrite="true">
-			<artifacts pattern="dist/[module].[ext]" />
+		<ivy:publish resolver="${resolver.publish}" pubrevision="${revision}" status="release" update="true" overwrite="true"
+			artifactsPattern="dist/[type]s/[artifact].[ext]">
 			<artifact name="${ivy.module}" ext="pom" type="pom" />
+			<artifact name="${ivy.module}" ext="jar" type="source" classifier="sources"/>
 		</ivy:publish>
 		<echo message="project ${ant.project.name} released with version ${revision} to ${resolver.publish}"/>
 	</target>
