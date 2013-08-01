@@ -119,7 +119,7 @@
 	<target name="publish" depends="dist,config-ivy" description="publish this project in the ivy repository">
 		<property name="revision" value="${version}"/>
 		<property name="resolver.publish" value="local"/>
-		<ivy:info/>
+		<ivy:info file="ivy.xml" validate="true"/>
 		<property name="ivy.pom.version" value="${revision}"/>
 		<ivy:deliver conf="*(public)" deliverpattern="dist/[type]s/${ivy.module}.ivy.xml" status="release" validate="true" pubrevision="${revision}"/>
 		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/poms/${ivy.module}.pom">
