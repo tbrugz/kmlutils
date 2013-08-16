@@ -81,6 +81,7 @@ public abstract class AbstractDump {
 		return null!=snippets.getProperty(snippetId);
 	}
 	
+	//XXX replace 'String...' params with 'Map<String,String>'? add new outSnippet method?
 	public void outSnippet(String snippetId, int nestLevel, String... params) {
 		String s = snippets.getProperty(snippetId);
 		if(s==null) return;
