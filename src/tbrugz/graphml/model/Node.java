@@ -6,8 +6,9 @@ public class Node implements Element, Stereotyped {
 
 	String id;
 	String label;
-	boolean initialNode;
-	boolean finalNode;
+	//initial & final, see: https://en.wikipedia.org/wiki/Directed_graph
+	boolean initialNode; //aka 'source'
+	boolean finalNode; //aka 'sink'
 	String stereotype;
 	
 	//List<Link> prox = new ArrayList<Link>();
@@ -42,6 +43,22 @@ public class Node implements Element, Stereotyped {
 
 	public void setStereotype(String stereotype) {
 		this.stereotype = stereotype;
+	}
+	
+	public boolean isInitialNode() {
+		return initialNode;
+	}
+
+	public void setInitialNode(boolean initialNode) {
+		this.initialNode = initialNode;
+	}
+
+	public boolean isFinalNode() {
+		return finalNode;
+	}
+
+	public void setFinalNode(boolean finalNode) {
+		this.finalNode = finalNode;
 	}
 
 	public String getStereotypeParam(int i) {
