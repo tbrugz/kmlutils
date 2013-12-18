@@ -37,7 +37,7 @@ class SVGPathStringReader {
 	static List<String> NUMBERS_OR_DELIMITER = new ArrayList<String>();
 	static List<String> LETTERS_OR_DELIMITER = new ArrayList<String>();
 	
-	static final String[] KNOWN_SVG_LETTERS = {"m", "l", "z", "c"};
+	static final String[] KNOWN_SVG_LETTERS = {"m", "l", "z", "c", "h", "v"};
 	
 	static {
 		DELIMITERS.add(SPACE);
@@ -52,10 +52,10 @@ class SVGPathStringReader {
 		for(String s: KNOWN_SVG_LETTERS) {
 			LETTERS.add(s);
 			LETTERS.add(s.toUpperCase());
-		}		
+		}
 		
 		NUMBERS_OR_DELIMITER.addAll(NUMBERS);
-		NUMBERS_OR_DELIMITER.addAll(DELIMITERS);
+		NUMBERS_OR_DELIMITER.add(COMMA);
 		
 		LETTERS_OR_DELIMITER.addAll(LETTERS);
 		LETTERS_OR_DELIMITER.addAll(DELIMITERS);
@@ -96,8 +96,16 @@ class SVGPathStringReader {
 		if(i==-1) return null;
 		if(i==0) return "";
 		
-		String substr = sb.substring(pos, pos+1);
-		pos++;
+		String substr = sb.substring(pos, i);
+		substr = substr.trim();
+		int strl = substr.length();
+		int strlx = 0;
+		if(strl>1) {
+			substr = substr.substring(0, 1);
+			strlx = strl-1;
+		}
+		//pos++;
+		pos = i - strlx;
 		//log.trace("readL: "+substr);
 		return substr;
 	}
@@ -255,6 +263,7 @@ public class SVGParser extends DefaultHandler {
 		 */
 		int state = 0;
 		char lastLetter = '0';
+		int numOfNumParams = 0;
 		boolean absoluteRef = true;
 		Point point = new Point();
 		Point previousPoint = null;
@@ -266,7 +275,7 @@ public class SVGParser extends DefaultHandler {
 				//log.warn("token = "+token);
 				
 				if(token==null) { break; }
-				if(token.equals("") || token.equals(" ")) {
+				if(token.equals("") || token.equals(" ") || token.equals(",")) {
 					//do nothing... ?
 					if(lastLetter == '0') {
 						log.warn("PATH.D: token list must start with letter [token="+token+"]");
@@ -275,6 +284,7 @@ public class SVGParser extends DefaultHandler {
 				}
 				else if(token.equalsIgnoreCase("L")) {
 					state = 1;
+					numOfNumParams = 2;
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("M")) {
@@ -287,6 +297,7 @@ public class SVGParser extends DefaultHandler {
 						state = 9;
 					}
 					
+					numOfNumParams = 2;
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("Z")) {
@@ -294,20 +305,38 @@ public class SVGParser extends DefaultHandler {
 					//polygon.add1stPointAgain();
 					//polygon.points.add(polygon.points.get(0)); //what if it has no points?
 					state = 9; //TODO: state = 0? after Z should be a M or terminate 
+					numOfNumParams = 0;
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("C")) {
-					log.warn("PATH.D: token ["+token+"] processed as L");
-					for(int i=0;i<4;i++) { token = sr.readNumbers(); } //ignore next 4 numbers
-					
+					//log.warn("PATH.D: token ["+token+"] processed as L");
+					//for(int i=0;i<4;i++) { token = sr.readNumbers(); } //ignore next 4 numbers
 					state = 1;
 					lastLetter = token.charAt(0);
+					numOfNumParams = 6;
+				}
+				else if(token.equalsIgnoreCase("S")) {
+					log.warn("PATH.D: token ["+token+"] processed as L");
+					state = 1;
+					lastLetter = token.charAt(0);
+					numOfNumParams = 4;
+				}
+				else if(token.equalsIgnoreCase("H")) {
+					state = 1;
+					lastLetter = token.charAt(0);
+					numOfNumParams = 1;
+				}
+				else if(token.equalsIgnoreCase("V")) {
+					//log.info("token:: "+token);
+					state = 1;
+					lastLetter = token.charAt(0);
+					numOfNumParams = 1;
 				}
 				else {
 					log.warn("PATH.D: unkown token: ["+token+"] [state0]");
 				}
 				
-				if(!token.equals("") && !token.equals(" ")) {
+				if(!token.equals("") && !token.equals(" ") && !token.equals(",")) {
 					if(isUpperCase(token)) {
 						absoluteRef = true;
 					}
@@ -321,13 +350,33 @@ public class SVGParser extends DefaultHandler {
 			if(state==1) {
 				token = sr.readNumbers();
 				if(token==null) { break; }
-				point.x = Float.parseFloat(token);
-
-				state = 2;
+				float f = Float.parseFloat(token);
+				if(numOfNumParams==1) {
+					//log.info("state==1 && numOfNumParams==1");
+					if(lastLetter == 'H' || lastLetter == 'h') {
+						point.x = f;
+						point.y = 0;
+						previousPoint = addPoint(polygon, point, absoluteRef, previousPoint);
+					}
+					else if(lastLetter == 'V' || lastLetter == 'v') {
+						point.x = 0;
+						point.y = f;
+						previousPoint = addPoint(polygon, point, absoluteRef, previousPoint);
+					}
+					else {
+						log.warn("unknown token ["+token+"] for state 1 & numOfParams==1");
+					}
+					state = 0;
+				}
+				else {
+					point.x = f;
+					state = 2;
+				}
 			}
 
 			if(state==2) {
 				token = sr.readNumbers();
+				if(token!=null) {
 				try {
 					point.y = Float.parseFloat(token);
 				}
@@ -335,19 +384,9 @@ public class SVGParser extends DefaultHandler {
 					log.warn("not a float: "+token);
 					e.printStackTrace();
 				}
-				Point newPoint = (Point)point.clone();
-				if(!absoluteRef) {
-					if(previousPoint==null) {
-						previousPoint = new Point();
-						previousPoint.x = 0; previousPoint.y = 0;
-						log.warn("PATH.D: relative point declared with no previous point [assuming "+previousPoint+"]");
-					}
-					newPoint.addPoint(previousPoint);
+				
+				previousPoint = addPoint(polygon, point, absoluteRef, previousPoint);
 				}
-				polygon.addPoint(newPoint);
-				previousPoint = newPoint;
-				//polygon.points.add((Point)point.clone());
-				setXYMaxMin(point);
 
 				state = 0;
 			}
@@ -361,10 +400,31 @@ public class SVGParser extends DefaultHandler {
 					log.warn("PATH.D: Unespected state: "+state+", token: "+token);
 				}
 			}
+			
+			//log.info("state:"+state+"; pos:"+sr.pos+"; sb:"+sr.sb);
 		}
 		
 		//log.info("poly 1st and last ponits: "+polygon.points.get(0)+"; "+polygon.points.get(polygon.points.size()-1));
 		polygon.setPolygonCentre();
+	}
+	
+	Point addPoint(Polygon polygon, Point point, boolean absoluteRef, Point previousPoint) {
+		//log.info("add point: "+point+" [prev: "+previousPoint+"]");
+		if(!absoluteRef) {
+			if(previousPoint==null) {
+				//previousPoint = new Point();
+				//previousPoint.x = 0; previousPoint.y = 0;
+				//log.warn("PATH.D: relative point declared with no previous point [assuming "+previousPoint+"]");
+			}
+			else {
+				point.addPoint(previousPoint);
+			}
+		}
+		point = (Point)point.clone();
+		//log.info("added point: "+point+" [prev: "+previousPoint+"]");
+		polygon.addPoint(point);
+		setXYMaxMin(point);
+		return point;
 	}
 	
 	boolean isUpperCase(String s) {
