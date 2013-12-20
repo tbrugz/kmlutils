@@ -18,7 +18,11 @@ public class SVG2KML {
 	public static void main(String[] args) throws IOException {
 		long initTime = System.currentTimeMillis();
 		Properties prop = new Properties();
-		prop.load(new FileInputStream("svg2kml.properties"));
+		String filename = "svg2kml.properties";
+		if(args!=null && args.length>0) {
+			filename = args[0];
+		}
+		prop.load(new FileInputStream(filename));
 		String fileIn = prop.getProperty("svg2kml.svgin");
 		String fileOut = prop.getProperty("svg2kml.kmlout");
 		float outMaxX = Float.parseFloat(prop.getProperty("svg2kml.maxX"));
