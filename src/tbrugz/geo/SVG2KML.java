@@ -36,7 +36,7 @@ public class SVG2KML {
 		CoordinatesTransformer ct = new CoordinatesTransformer();
 		float[] inputBounds = {root.maxX, root.minX, root.maxY, root.minY};
 		float[] outputBounds = {outMaxX, outMinX, outMaxY, outMinY,};
-		log.info("coords bounds: input: "+arrayToString(inputBounds)+", output: "+arrayToString(outputBounds));
+		log.info("coords bounds [maxX, minX, maxY, minY]: input: "+arrayToString(inputBounds)+", output: "+arrayToString(outputBounds));
 		
 		ct.transformCoords(root, inputBounds, outputBounds);
 
