@@ -22,6 +22,7 @@ public class SVG2KML {
 		if(args!=null && args.length>0) {
 			filename = args[0];
 		}
+		log.info("loading props from: "+filename);
 		prop.load(new FileInputStream(filename));
 		String fileIn = prop.getProperty("svg2kml.svgin");
 		String fileOut = prop.getProperty("svg2kml.kmlout");

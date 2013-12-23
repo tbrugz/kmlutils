@@ -134,6 +134,7 @@ public class SVGParser extends DefaultHandler {
 	
 	public static String PATH_D = "d";
 	public static String ANY_ID = "id";
+	public static String ANY_TRANSFORM = "transform";
 	
 	Root root = null;
 	Stack<Composite> groupStack = new Stack<Composite>();
@@ -208,6 +209,10 @@ public class SVGParser extends DefaultHandler {
 			groupStack.peek().getChildren().add(g);
 			groupStack.push(g);
 			g.setId(id);
+			String transform = attributes.getValue(ANY_TRANSFORM);
+			if(transform!=null) {
+				log.warn("transform (in <"+G+">) not supported [id="+id+"]: "+transform);
+			}
 
 			log.trace("<g> processed, l:"+nestLevel);
 			nestLevel++;
@@ -217,6 +222,12 @@ public class SVGParser extends DefaultHandler {
 			Polygon p = new Polygon();
 			groupStack.peek().getChildren().add(p);
 			p.setId(id);
+			
+			String transform = attributes.getValue(ANY_TRANSFORM);
+			if(transform!=null) {
+				log.warn("transform (in <"+PATH+">) not supported [id="+id+"]: "+transform);
+			}
+			
 			String pointsStr = attributes.getValue(PATH_D);
 			//TODO: polygonS
 			procPolygon(p, pointsStr);
