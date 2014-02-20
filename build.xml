@@ -46,7 +46,13 @@
 		</jar>
 	</target>
 
-	<target name="dist" depends="compile, jar-source">
+	<target name="javadoc" depends="prepare" description="builds javadoc">
+		<!--echo message="java.home: ${java.home}" /-->
+		<javadoc destdir="dist/javadoc" sourcepath="src" classpathref="default"/>
+		<jar destfile="dist/javadocs/kmlutils.jar" basedir="dist/javadoc" includes="**"/>
+	</target>
+
+	<target name="dist" depends="compile, jar-source, javadoc, make-ivy-pom">
 		<mkdir dir="dist"/>
 		<jar destfile="dist/jars/kmlutils.jar" basedir="bin">
 			<manifest>
@@ -115,16 +121,22 @@
 		<ivy:retrieve />
 	</target>
 
-	<!-- see http://theholyjava.wordpress.com/2011/01/26/using-ivy-with-pom-xml/ -->
-	<target name="publish" depends="dist,config-ivy" description="publish this project in the ivy repository">
+	<target name="make-ivy-pom" depends="config-ivy">
+		<ivy:info/>
 		<property name="revision" value="${version}"/>
-		<property name="resolver.publish" value="local"/>
-		<ivy:info file="ivy.xml" validate="true"/>
 		<property name="ivy.pom.version" value="${revision}"/>
 		<ivy:deliver conf="*(public)" deliverpattern="dist/[type]s/${ivy.module}.ivy.xml" status="release" validate="true" pubrevision="${revision}"/>
-		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/poms/${ivy.module}.pom">
+		<ivy:makepom ivyfile="ivy.xml" pomfile="dist/poms/${ivy.module}.pom" templatefile="pom-template.xml">
 			<mapping conf="default" scope="compile"/>
 		</ivy:makepom>
+	</target>
+	
+	<!-- see http://theholyjava.wordpress.com/2011/01/26/using-ivy-with-pom-xml/ -->
+	<target name="publish" depends="dist" description="publish this project in the ivy repository">
+		<property name="resolver.publish" value="local"/>
+		<!--property name="revision" value="${version}"/>
+		<ivy:info file="ivy.xml" validate="true"/>
+		<property name="ivy.pom.version" value="${revision}"/-->
 		<echo message="ivy.settings.dir: ${ivy.settings.dir} ; ivy.module: ${ivy.module}"/>
 		<ivy:publish resolver="${resolver.publish}" pubrevision="${revision}" status="release" update="true" overwrite="true"
 			artifactsPattern="dist/[type]s/[artifact].[ext]">
@@ -135,6 +147,14 @@
 		<echo message="project ${ant.project.name} released with version ${revision} to ${resolver.publish}"/>
 	</target>
 
+	<target name="publish-sonatype-snapshot" depends="dist">
+		<ant antfile="build-sonatype.xml" target="deploy"/> <!-- deploy snapshots -->
+	</target>
+	
+	<target name="publish-sonatype-release" depends="dist">
+		<ant antfile="build-sonatype.xml" target="stage"/> <!-- deploy (signed) releases -->
+	</target>
+	
 	<target name="all" depends="clean,publish" description="clean, build and publish project"/>
 	
 </project>
