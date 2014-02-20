@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- this is a pom.xml template file for ivy usage SKIP_LINE -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>${ivy.pom.groupId}</groupId>
+  <artifactId>${ivy.pom.artifactId}</artifactId>
+  <version>${ivy.pom.version}</version>
+  <packaging>${ivy.pom.packaging}</packaging>
+  <name>kmlutils</name>
+  <description>The main purpose of this project is a tool for converting SVG files into KML files</description>
+  <url>https://bitbucket.org/tbrugz/kmlutils</url>
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License, Version 3</name>
+      <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:hg:https://bitbucket.org/tbrugz/kmlutils</connection>
+    <developerConnection>scm:hg:https://bitbucket.org/tbrugz/kmlutils</developerConnection>
+    <url>https://bitbucket.org/tbrugz/kmlutils</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>tbrugz</id>
+      <name>Telmo Brugnara</name>
+      <email>tbrugz@gmail.com</email>
+    </developer>
+  </developers>
+  <!-- dependencies: see ivy.xml SKIP_LINE -->
+</project>
