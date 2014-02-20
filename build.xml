@@ -147,6 +147,22 @@
 		<echo message="project ${ant.project.name} released with version ${revision} to ${resolver.publish}"/>
 	</target>
 
+	<target name="prepare-publish-sonatype">
+		<condition property="version-snapshot">
+			<matches pattern="SNAPSHOT" string="${version}"/>
+		</condition>
+	</target>
+
+	<target name="publish-sonatype-snapshot" depends="dist,prepare-publish-sonatype">
+		<fail message="Must be SNAPSHOT version" unless="version-snapshot"/>
+		<ant antfile="build-sonatype.xml" target="deploy"/> <!-- deploy snapshots -->
+	</target>
+	
+	<target name="publish-sonatype-release" depends="dist,prepare-publish-sonatype">
+		<fail message="Must NOT be SNAPSHOT version" if="version-snapshot"/>
+		<ant antfile="build-sonatype.xml" target="stage"/> <!-- deploy (signed) releases -->
+	</target>
+	
 	<target name="all" depends="clean,publish" description="clean, build and publish project"/>
 	
 </project>
