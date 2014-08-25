@@ -26,6 +26,7 @@
 
 	<target name="prepare">
 		<mkdir dir="bin" />
+		<mkdir dir="dist"/>
 		<mkdir dir="work/output" />
 	</target>
 
@@ -37,6 +38,15 @@
 				<exclude name="log4j.properties"/>
 			</fileset>
 		</copy>
+	</target>
+
+	<target name="jar" depends="compile" description="builds jar">
+		<jar destfile="dist/jars/kmlutils.jar" basedir="bin">
+			<manifest>
+				<attribute name="Implementation-Title" value="${ant.project.name}"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+			</manifest>
+		</jar>
 	</target>
 	
 	<target name="jar-source" depends="prepare" description="builds sources jar">
@@ -52,14 +62,7 @@
 		<jar destfile="dist/javadocs/kmlutils.jar" basedir="dist/javadoc" includes="**"/>
 	</target>
 
-	<target name="dist" depends="compile, jar-source, javadoc, make-ivy-pom">
-		<mkdir dir="dist"/>
-		<jar destfile="dist/jars/kmlutils.jar" basedir="bin">
-			<manifest>
-				<attribute name="Implementation-Title" value="${ant.project.name}"/>
-				<attribute name="Implementation-Version" value="${version}"/>
-			</manifest>
-		</jar>
+	<target name="dist" depends="jar, jar-source, javadoc, make-ivy-pom">
 		<copy tofile="dist/jars/svg2kml.jar" file="dist/jars/kmlutils.jar"/>
 		<!--copy tofile="dist/jars/kmlutils-${version}.jar" file="dist/jars/kmlutils.jar"/-->
 	</target>

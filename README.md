@@ -37,10 +37,11 @@ svg2graphml howto
 
 Dependencies
 ------------
-- jdk 1.5
+- jdk 1.5+
 - log4j (included)
 - commons-logging (included)
-- ant (not included - build only)
+- [ant](http://ant.apache.org/) (not included - build only)
+- [ivy](http://ant.apache.org/ivy/) (not included - build only)
 
 
 Running - classes with main()
