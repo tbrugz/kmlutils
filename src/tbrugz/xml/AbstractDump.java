@@ -30,7 +30,7 @@ public abstract class AbstractDump {
 	
 	static final Log log = LogFactory.getLog(AbstractDump.class);
 
-	protected final Properties snippets = new FileReaderProperties();
+	protected final Properties snippets = new Properties();
 	
 	PrintStream output = null;
 	
@@ -45,7 +45,7 @@ public abstract class AbstractDump {
 	}
 	
 	public void loadProp(Properties prop, String fileName) {
-		Properties ptemp = new Properties();
+		Properties ptemp = new FileReaderProperties();
 		try {
 			File f = new File(fileName);
 			ptemp.load(new FileInputStream(f));
@@ -54,9 +54,12 @@ public abstract class AbstractDump {
 		}
 		catch(IOException ioe) {
 			try {
-				String resource = "/"+fileName;
+				String resource = fileName;
 				InputStream is = AbstractDump.class.getResourceAsStream(resource);
-				if(is==null) { log.warn("resource not found: "+resource); return; }
+				if(is==null) {
+					log.warn("file (or resource) not found: "+fileName);
+					return;
+				}
 				ptemp.load(is);
 				prop.putAll(ptemp);
 				log.info("loaded prop resource: "+resource);

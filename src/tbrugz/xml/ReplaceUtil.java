@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class ReplaceUtil {
 
-	static Log log = LogFactory.getLog(AbstractDump.class);
+	static final Log log = LogFactory.getLog(ReplaceUtil.class);
 
 	final static Pattern numberPattern = Pattern.compile("\\{([0-9]+)}");
 	final static Pattern randomFuncPattern = Pattern.compile("\\{random\\(([0-9]+)\\)}");

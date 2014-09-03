@@ -30,14 +30,16 @@ class StringUniquener {
 
 public class DumpKMLModel extends AbstractDump {
 
-	static Log log = LogFactory.getLog(DumpKMLModel.class);
+	static final Log log = LogFactory.getLog(DumpKMLModel.class);
 
+	static final String DEFAULT_PROP_FILE = "snippets.properties";
+	
 	Properties idMappings = new Properties();
 	StringUniquener uniqueIds = new StringUniquener();
 	
 	@Override
 	public void dumpModel(Element root, PrintStream out) {
-		loadSnippets("snippets.properties");
+		loadSnippets(DEFAULT_PROP_FILE);
 		super.dumpModel(root, out);
 	}
 	
