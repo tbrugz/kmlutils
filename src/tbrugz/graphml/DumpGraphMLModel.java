@@ -36,7 +36,12 @@ public class DumpGraphMLModel extends AbstractDump {
 	
 	public void dumpModel(Element elem, int level) {
 		if(elem instanceof Root) {
-			outSnippet("graphml", level);
+			if(hasSnippet("graphml")) {
+				outSnippet("graphml", level);
+			}
+			else {
+				out("<graphml><graph>", level);
+			}
 		}
 		else if(elem instanceof Node) {
 			Node t = (Node) elem;
