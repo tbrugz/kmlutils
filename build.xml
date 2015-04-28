@@ -141,7 +141,8 @@
 		<!--property name="revision" value="${version}"/>
 		<ivy:info file="ivy.xml" validate="true"/>
 		<property name="ivy.pom.version" value="${revision}"/-->
-		<echo message="ivy.settings.dir: ${ivy.settings.dir} ; ivy.module: ${ivy.module}"/>
+		<echo message="ivy.settings.dir: ${ivy.settings.dir} ; ivy.settings.file: ${ivy.settings.file} ; ivy.module: ${ivy.module}"/>
+		<echo message="mvn.repository.dir = ${mvn.repository.dir}"/>
 		<ivy:publish resolver="${resolver.publish}" pubrevision="${revision}" status="release" update="true" overwrite="true"
 			artifactsPattern="dist/[type]s/[artifact].[ext]">
 			<artifact name="${ivy.module}" ext="pom" type="pom" />
