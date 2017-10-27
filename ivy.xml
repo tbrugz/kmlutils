@@ -10,6 +10,6 @@
 		<artifact name="kmlutils" type="source" ext="jar" conf="default" m:classifier="sources"/>
 	</publications>
 	<dependencies>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="default->default"/>
+		<dependency org="commons-logging" name="commons-logging" rev="1.2" conf="default->default"/>
 	</dependencies>
 </ivy-module>
