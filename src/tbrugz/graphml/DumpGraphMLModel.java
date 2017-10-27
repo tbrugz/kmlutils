@@ -45,6 +45,10 @@ public class DumpGraphMLModel extends AbstractDump {
 		}
 		else if(elem instanceof Node) {
 			Node t = (Node) elem;
+			if(t.getId()==null) {
+				log.warn("node "+t+" with null id");
+				return;
+			}
 			out("<node id=\""+t.getId()+"\">", level);
 			outNodeContents(t, level+1);
 			out("</node>", level);
@@ -52,6 +56,10 @@ public class DumpGraphMLModel extends AbstractDump {
 		}
 		else if(elem instanceof Edge) {
 			Edge myl = (Edge) elem;
+			if(myl.getSource()==null || myl.getTarget()==null) {
+				log.warn("edge "+myl+" with null source or target");
+				return;
+			}
 			out("<edge source=\""+myl.getSource()+"\" target=\""+myl.getTarget()+"\">", level);
 			outEdgeContents(myl, level+1);
 			out("</edge>", level);
