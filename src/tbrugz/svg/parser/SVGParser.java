@@ -31,13 +31,17 @@ class SVGPathStringReader {
 	
 	static final String SPACE = " ";
 	static final String COMMA = ",";
+	static final String MINUS = "-";
 	static List<String> NUMBERS = new ArrayList<String>(); // = {"0","1","2","3","4","5","6","7","8","9"};
 	static List<String> LETTERS = new ArrayList<String>();
 	static List<String> DELIMITERS = new ArrayList<String>();
 	static List<String> NUMBERS_OR_DELIMITER = new ArrayList<String>();
 	static List<String> LETTERS_OR_DELIMITER = new ArrayList<String>();
+	static List<String> LETTERS_OR_DELIMITER_OR_MINUS = new ArrayList<String>();
 	
-	static final String[] KNOWN_SVG_LETTERS = {"m", "l", "z", "c", "h", "v"};
+	static final String[] KNOWN_SVG_LETTERS = {"m", "l", "z", "h", "v",
+			"c", "s", //"q", "t", "a"
+			};
 	
 	static {
 		DELIMITERS.add(SPACE);
@@ -59,6 +63,10 @@ class SVGPathStringReader {
 		
 		LETTERS_OR_DELIMITER.addAll(LETTERS);
 		LETTERS_OR_DELIMITER.addAll(DELIMITERS);
+
+		LETTERS_OR_DELIMITER_OR_MINUS.addAll(LETTERS);
+		LETTERS_OR_DELIMITER_OR_MINUS.addAll(DELIMITERS);
+		LETTERS_OR_DELIMITER_OR_MINUS.add(MINUS);
 	}
 	
 	public SVGPathStringReader(String s) {
@@ -114,9 +122,19 @@ class SVGPathStringReader {
 		int firstNumber = indexOf(sb, NUMBERS, pos);
 		if(firstNumber==-1) return null;
 		
-		int i = indexOf(sb, LETTERS_OR_DELIMITER, firstNumber);
+		int i = indexOf(sb, LETTERS_OR_DELIMITER_OR_MINUS, firstNumber+1);
 		if(i==-1) { i=sb.length(); }
 		if(i==0) { return ""; }
+		
+		if("e".equals(sb.substring(i-1, i))) {
+			String numberInput = sb.substring(firstNumber, i);
+			
+			i = indexOf(sb, LETTERS_OR_DELIMITER_OR_MINUS, i+1);
+			if(i==-1) { i=sb.length(); }
+			log.info("(exponential notation) [i=="+i+"] input: "+numberInput+" return: "+sb.substring(firstNumber, i));
+			
+			if(i==0) { return ""; }
+		}
 
 		//log.trace("readN: "+pos+"; "+i);
 		String substr = sb.substring(firstNumber, i);
@@ -268,7 +286,7 @@ public class SVGParser extends DefaultHandler {
 		 * 
 		 * 0 - wait for letter
 		 * 1 - wait for 1st point
-		 * 2 - wait for 1st point
+		 * 2 - wait for 2nd point
 		 * 9 - end
 		 * 
 		 */
@@ -320,7 +338,7 @@ public class SVGParser extends DefaultHandler {
 					lastLetter = token.charAt(0);
 				}
 				else if(token.equalsIgnoreCase("C")) {
-					//log.warn("PATH.D: token ["+token+"] processed as L");
+					log.debug("PATH.D: token ["+token+"] processed as L");
 					//for(int i=0;i<4;i++) { token = sr.readNumbers(); } //ignore next 4 numbers
 					state = 1;
 					lastLetter = token.charAt(0);
