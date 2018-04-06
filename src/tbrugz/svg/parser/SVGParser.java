@@ -285,8 +285,7 @@ public class SVGParser extends DefaultHandler {
 		 * state's:
 		 * 
 		 * 0 - wait for letter
-		 * 1 - wait for 1st point
-		 * 2 - wait for 2nd point
+		 * 1 - wait for points
 		 * 9 - end
 		 * 
 		 */
@@ -345,7 +344,7 @@ public class SVGParser extends DefaultHandler {
 					numOfNumParams = 6;
 				}
 				else if(token.equalsIgnoreCase("S")) {
-					log.warn("PATH.D: token ["+token+"] processed as L");
+					log.debug("PATH.D: token ["+token+"] processed as L");
 					state = 1;
 					lastLetter = token.charAt(0);
 					numOfNumParams = 4;
@@ -377,50 +376,40 @@ public class SVGParser extends DefaultHandler {
 			}
 			
 			if(state==1) {
-				token = sr.readNumbers();
-				if(token==null) { break; }
-				float f = Float.parseFloat(token);
+				float[] numbers = new float[6];
+				for(int i=0;i<numOfNumParams;i++) {
+					token = sr.readNumbers();
+					if(token==null) { break; }
+					numbers[i] = Float.parseFloat(token);
+				}
+				
 				if(numOfNumParams==1) {
 					//log.info("state==1 && numOfNumParams==1");
 					if(lastLetter == 'H' || lastLetter == 'h') {
-						point.x = f;
-						point.y = 0;
+						point.x = numbers[0];
+						point.y = absoluteRef ? previousPoint.y : 0;
 						previousPoint = addPoint(polygon, point, absoluteRef, previousPoint);
 					}
 					else if(lastLetter == 'V' || lastLetter == 'v') {
-						point.x = 0;
-						point.y = f;
+						point.x = absoluteRef ? previousPoint.x : 0;
+						point.y = numbers[0];
 						previousPoint = addPoint(polygon, point, absoluteRef, previousPoint);
 					}
 					else {
 						log.warn("unknown token ["+token+"] for state 1 & numOfParams==1");
 					}
-					state = 0;
 				}
 				else {
-					point.x = f;
-					state = 2;
+					int padding = numOfNumParams-2;
+					
+					point.x = numbers[padding+0];
+					point.y = numbers[padding+1];
+					previousPoint = addPoint(polygon, point, absoluteRef, previousPoint);
 				}
-			}
-
-			if(state==2) {
-				token = sr.readNumbers();
-				if(token!=null) {
-				try {
-					point.y = Float.parseFloat(token);
-				}
-				catch(NullPointerException e) {
-					log.warn("not a float: "+token);
-					e.printStackTrace();
-				}
-				
-				previousPoint = addPoint(polygon, point, absoluteRef, previousPoint);
-				}
-
 				state = 0;
 			}
 			
-			if(state!=0 && state!=1 && state!=2) {
+			if(state!=0 && state!=1) {
 				if(state == 9) {
 					//do nothing
 					break;
