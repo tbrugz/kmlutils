@@ -12,6 +12,8 @@ This project also provides a conversion tool for SVG to GraphML (tbrugz.geo.SVG2
 
 The project's [wiki](https://bitbucket.org/tbrugz/kmlutils/wiki) also have some useful information.
 
+Maven snapshot repo at [oss.sonatype.org](https://oss.sonatype.org/content/repositories/snapshots//org/bitbucket/tbrugz/kmlutils/)
+
 Author:
 Telmo Brugnara <[tbrugz@gmail.com](mailto:tbrugz@gmail.com)>
 
