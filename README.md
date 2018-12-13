@@ -54,6 +54,14 @@ Running - classes with main()
 - tbrugz.xml.test.Test
 
 
+Building
+--------
+- clean & resolve dependencies: `ant clean resolve`
+- build artifacts: `ant dist`
+- publish artifacts: `ant publish`
+- clean, resolve dependencies, build & publish: `ant all`
+
+
 Included media
 --------------
   
