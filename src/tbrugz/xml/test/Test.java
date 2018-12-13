@@ -19,9 +19,6 @@ class DumpTest extends AbstractDump {
 
 public class Test {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		String s = "aaa {0} aaa";
 		String pattern = "\\{0}";
