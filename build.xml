@@ -10,8 +10,8 @@
 	<property file="ivysettings.properties"/>
 	
 	<path id="compile">
-		<pathelement location="lib/commons-logging-1.1.1.jar"/>
-		<pathelement location="lib/log4j-1.2.15.jar"/>
+		<pathelement location="lib/commons-logging-1.2.jar"/>
+		<!--<pathelement location="lib/log4j-1.2.15.jar"/>-->
 	</path>
 
 	<path id="default">
@@ -21,6 +21,7 @@
 	</path>
 	
 	<target name="clean">
+		<delete dir="lib"/>
 		<delete dir="bin"/>
 		<delete dir="dist"/>
 	</target>
