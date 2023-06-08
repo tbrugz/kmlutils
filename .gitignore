@@ -1,0 +1,6 @@
+bin/*
+lib/*
+dist/*
+work/output/*
+work/input/tmp/*
+work/tmp/*
