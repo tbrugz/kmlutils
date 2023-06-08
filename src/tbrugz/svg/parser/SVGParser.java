@@ -15,19 +15,18 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.sun.org.apache.xerces.internal.impl.Constants;
-
 import tbrugz.svg.model.Group;
 import tbrugz.svg.model.Point;
 import tbrugz.svg.model.Polygon;
 import tbrugz.svg.model.Root;
+import tbrugz.xml.AbstractSAXParser;
 import tbrugz.xml.model.skel.Composite;
 
 class SVGPathStringReader {
 	StringBuffer sb;
 	int pos = 0;
 
-	static Log log = LogFactory.getLog(SVGPathStringReader.class);
+	static final Log log = LogFactory.getLog(SVGPathStringReader.class);
 	
 	static final String SPACE = " ";
 	static final String COMMA = ",";
@@ -166,8 +165,6 @@ public class SVGParser extends DefaultHandler {
 		spf.setValidating(false);  
 		//spf.setNamespaceAware(false);
 		//spf.setSchema(null);
-		String LOAD_EXTERNAL_DTD_FEATURE = Constants.XERCES_FEATURE_PREFIX + Constants.LOAD_EXTERNAL_DTD_FEATURE;
-		
 		/*
 		 * about validating:
 		 * LOAD_EXTERNAL_DTD_FEATURE = "http://apache.org/xml/features/"+"nonvalidating/load-external-dtd"
@@ -179,7 +176,7 @@ public class SVGParser extends DefaultHandler {
 		 */
 
 		try {
-			spf.setFeature(LOAD_EXTERNAL_DTD_FEATURE, false);
+			spf.setFeature(AbstractSAXParser.LOAD_EXTERNAL_DTD_FEATURE, false);
 
 			//get a new instance of parser
 			SAXParser sp = spf.newSAXParser();

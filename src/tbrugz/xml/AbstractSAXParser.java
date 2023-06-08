@@ -11,17 +11,18 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.sun.org.apache.xerces.internal.impl.Constants;
-
 import tbrugz.xml.model.skel.Composite;
 import tbrugz.xml.model.skel.CompositeImpl;
 
 public abstract class AbstractSAXParser extends DefaultHandler {
 	
+	//String LOAD_EXTERNAL_DTD_FEATURE = Constants.XERCES_FEATURE_PREFIX + Constants.LOAD_EXTERNAL_DTD_FEATURE;
+	public static final String LOAD_EXTERNAL_DTD_FEATURE = "http://apache.org/xml/features/" + "nonvalidating/load-external-dtd";
+
 	protected CompositeImpl root = null;
 	//int nestLevel = 0;
 	
-	static Log log = LogFactory.getLog(AbstractSAXParser.class);
+	static final Log log = LogFactory.getLog(AbstractSAXParser.class);
 	
 	public static String getPadding(int size) {
 		StringBuffer sb = new StringBuffer();
@@ -37,7 +38,7 @@ public abstract class AbstractSAXParser extends DefaultHandler {
 		spf.setValidating(false);  
 		//spf.setNamespaceAware(false);
 		//spf.setSchema(null);
-		String LOAD_EXTERNAL_DTD_FEATURE = Constants.XERCES_FEATURE_PREFIX + Constants.LOAD_EXTERNAL_DTD_FEATURE;
+		//String LOAD_EXTERNAL_DTD_FEATURE = Constants.XERCES_FEATURE_PREFIX + Constants.LOAD_EXTERNAL_DTD_FEATURE;
 		
 		/*
 		 * about validating:
